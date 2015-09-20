@@ -109,8 +109,17 @@ public class FileUtilities {
         }
     }
 
+    public static boolean doesFileExist(Context context, String name) {
+        File fileDirectory = getFileDirectory(context);
+        File fileToCheck = new File(fileDirectory, name);
 
-    public static void saveArrayList(Context context, String name, HashMap<String, String> vocabWords) {
+        if(fileToCheck.exists()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void saveHashmap(Context context, String name, HashMap<String, String> vocabWords) {
         File fileDirectory = getFileDirectory(context);
         File fileToWrite = new File(fileDirectory, name);
 
@@ -127,7 +136,7 @@ public class FileUtilities {
         }
     }
 
-    public static HashMap<String, String> getArrayList(Context context, String name) {
+    public static HashMap<String, String> getHashmap(Context context, String name) {
         File fileDirectory = getFileDirectory(context);
         File fileToRead = new File(fileDirectory, name);
         HashMap<String, String> newlyReadInMap = new HashMap<String, String>();
@@ -148,7 +157,6 @@ public class FileUtilities {
         }
 
         return newlyReadInMap;
-
     }
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="match_parent"
+              android:layout_width="fill_parent"
               android:layout_height="match_parent"
                 android:background="@android:color/white">
 
@@ -12,37 +12,42 @@
         android:id="@+id/questionTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="40dp"
+        android:textSize="30sp"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Show Answer"
         android:id="@+id/showAnswerButton"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/questionTextView"
-        android:layout_toEndOf="@+id/questionTextView"
-        android:layout_marginBottom="130dp"/>
+        android:layout_marginBottom="130dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="#a8e7ff"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete Word"
         android:id="@+id/deleteWordButton"
-        android:layout_alignTop="@+id/showAnswerButton"
-        android:layout_toLeftOf="@+id/questionTextView"
-        android:layout_toStartOf="@+id/questionTextView"/>
+        android:background="#d02d2b"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Next Word"
         android:id="@+id/nextWordButton"
-        android:layout_below="@+id/deleteWordButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
         android:background="#1cb836"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:layout_above="@+id/deleteWordButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="35dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,5 +57,15 @@
         android:layout_below="@+id/questionTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:textSize="30sp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset Words"
+        android:id="@+id/resetWordsButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 </RelativeLayout>

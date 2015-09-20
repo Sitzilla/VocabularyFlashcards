@@ -13,8 +13,8 @@ public class KoreanWords {
         koreanToEnglish.put("것 ", "A thing or an object");
         koreanToEnglish.put("주다", "  to give");
         koreanToEnglish.put("듣다", "  to hear");
-//        koreanToEnglish.put("배우다", "to learn");
-//        koreanToEnglish.put("씻다", "to wash");
+        koreanToEnglish.put("배우다", "to learn");
+        koreanToEnglish.put("씻다", "to wash");
 //        koreanToEnglish.put("쓰다", "to write");
 //        koreanToEnglish.put("울다", "to cry");
 //        koreanToEnglish.put("갖다", "to have");

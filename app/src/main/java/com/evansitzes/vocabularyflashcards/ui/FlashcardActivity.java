@@ -1,6 +1,8 @@
 package com.evansitzes.vocabularyflashcards.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,8 +14,10 @@ import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.evansitzes.vocabularyflashcards.model.KoreanWords;
 
-import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getArrayList;
-import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveArrayList;
+import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.doesFileExist;
+import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getHashmap;
+import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveHashmap;
+
 
 /**
  * Created by evan on 9/20/15.
@@ -26,6 +30,7 @@ public class FlashcardActivity extends Activity {
     private Button showAnswer;
     private Button nextWord;
     private Button deleteWord;
+    private Button resetWord;
     private KoreanWords koreanWords = new KoreanWords();
 
 
@@ -40,9 +45,11 @@ public class FlashcardActivity extends Activity {
         showAnswer = (Button)findViewById(R.id.showAnswerButton);
         nextWord = (Button)findViewById(R.id.nextWordButton);
         deleteWord = (Button)findViewById(R.id.deleteWordButton);
+        resetWord = (Button)findViewById(R.id.resetWordsButton);
+
 
         if (savedFileExists()) {
-            koreanWords.setWordList(getArrayList(this, "wordFile"));
+            koreanWords.setWordList(getHashmap(this, "wordFile"));
         } else {
             koreanWords.populateInitialWordlist();
         }
@@ -67,6 +74,7 @@ public class FlashcardActivity extends Activity {
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO This can be refactored out to a new method
                 answer.setTextColor(Color.WHITE);
                 String currentWord = koreanWords.getRandomKoreanWord();
                 question.setText(currentWord);
@@ -75,6 +83,7 @@ public class FlashcardActivity extends Activity {
             }
         });
 
+        // TODO Add 'winning' scenario
         deleteWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,14 +96,53 @@ public class FlashcardActivity extends Activity {
             }
         });
 
+        resetWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                areYouSure();
+//                // TODO Add an "are you sure?" question box
+//                koreanWords.populateInitialWordlist();
+//                answer.setTextColor(Color.WHITE);
+//                String currentWord = koreanWords.getRandomKoreanWord();
+//                question.setText(currentWord);
+//                answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+            }
+        });
+
+
+    }
+
+    private void areYouSure() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // TODO Can probably be refactored
+                        koreanWords.populateInitialWordlist();
+                        answer.setTextColor(Color.WHITE);
+                        String currentWord = koreanWords.getRandomKoreanWord();
+                        question.setText(currentWord);
+                        answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 
     private void saveFlashcard() {
-        saveArrayList(this, "wordFile", koreanWords.getWordList());
+        saveHashmap(this, "wordFile", koreanWords.getWordList());
     }
 
     private boolean savedFileExists() {
-        return true;
+        return doesFileExist(this, "wordFile");
     }
 
 }
