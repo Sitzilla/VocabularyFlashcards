@@ -11,6 +11,7 @@ import com.evansitzes.vocabularyflashcards.R;
 public class LevelSelectionActivity extends AppCompatActivity {
 
     private Button basicWordlist;
+    private Button intermediateWordlist;
     private Button back;
 
 
@@ -20,6 +21,7 @@ public class LevelSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_selection);
 
         basicWordlist = (Button) findViewById(R.id.basicWordListButton);
+        intermediateWordlist = (Button) findViewById(R.id.intermediateWordListButton);
         back = (Button) findViewById(R.id.backButton);
 
         loadSelection();
@@ -31,6 +33,16 @@ public class LevelSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LevelSelectionActivity.this, FlashcardActivity.class);
+                intent.putExtra("level", "basicKorean");
+                startActivity(intent);
+            }
+        });
+
+        intermediateWordlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardActivity.class);
+                intent.putExtra("level", "intermediateKorean");
                 startActivity(intent);
             }
         });

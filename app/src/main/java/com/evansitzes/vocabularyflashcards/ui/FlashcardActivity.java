@@ -3,6 +3,7 @@ package com.evansitzes.vocabularyflashcards.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evansitzes.vocabularyflashcards.R;
+import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
-import com.evansitzes.vocabularyflashcards.model.KoreanWords;
+import com.evansitzes.vocabularyflashcards.model.IntermediateKoreanWords;
 
 import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.doesFileExist;
 import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getHashmap;
@@ -23,7 +25,7 @@ import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveHashma
  */
 public class FlashcardActivity extends Activity {
 
-    private Flashcard flashcard = new Flashcard();
+    private Flashcard wordlist;
     private TextView question;
     private TextView answer;
     private TextView remaining;
@@ -32,13 +34,26 @@ public class FlashcardActivity extends Activity {
     private Button nextWord;
     private Button deleteWord;
     private Button resetWord;
-    private KoreanWords koreanWords = new KoreanWords();
+    private Button back;
+    private String level;
+
+
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
+
+        level = getIntent().getStringExtra("level");
+
+        // Determines what level of flashcards to use
+        if (level.equals("basicKorean")) {
+            this.wordlist = new BasicKoreanWords();
+        } else {
+            this.wordlist = new IntermediateKoreanWords();
+        }
+
 
         question = (TextView) findViewById(R.id.questionTextView);
         answer = (TextView) findViewById(R.id.answerTextView);
@@ -47,19 +62,20 @@ public class FlashcardActivity extends Activity {
         nextWord = (Button) findViewById(R.id.nextWordButton);
         deleteWord = (Button) findViewById(R.id.deleteWordButton);
         resetWord = (Button) findViewById(R.id.resetWordsButton);
+        back = (Button) findViewById(R.id.backButtonFlashcards);
 
 
         if (savedFileExists()) {
-            koreanWords.setWordList(getHashmap(this, "wordFile"));
+            wordlist.setWordList(getHashmap(this, "wordFile" + level));
         } else {
-            koreanWords.populateInitialWordlist();
+            wordlist.populateInitialWordlist();
         }
 
         // Set counter for number of words remaining in list
-        remainingCount = koreanWords.getSize();
+        remainingCount = wordlist.getSize();
         remaining.setText(remainingCount + " Remaining Words");
 
-        if (koreanWords.getSize() == 0) {
+        if (wordlist.getSize() == 0) {
             question.setText("Congratulations! No more words remaining.");
             answer.setTextColor(Color.parseColor("#efb200"));
             answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
@@ -67,9 +83,9 @@ public class FlashcardActivity extends Activity {
             nextWord.setEnabled(false);
             deleteWord.setEnabled(false);
         } else {
-            final String currentWord = koreanWords.getRandomKoreanWord();
+            final String currentWord = wordlist.getRandomForeignWord();
             question.setText(currentWord);
-            answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+            answer.setText(wordlist.getEnglishFromForeign(currentWord));
         }
         loadFlashcard();
     }
@@ -89,25 +105,23 @@ public class FlashcardActivity extends Activity {
             public void onClick(View v) {
                 // TODO This can be refactored out to a new method
                 answer.setTextColor(Color.parseColor("#571935"));
-                String currentWord = koreanWords.getRandomKoreanWord();
+                String currentWord = wordlist.getRandomForeignWord();
                 question.setText(currentWord);
-                answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                answer.setText(wordlist.getEnglishFromForeign(currentWord));
 
             }
         });
-
-        // TODO Add 'winning' scenario
         deleteWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // delete current word from Hashmap of vocab words
                 answer.setTextColor(Color.parseColor("#571935"));
-                koreanWords.removeKoreanWord((String) question.getText());
+                wordlist.removeForeignWord((String) question.getText());
                 remainingCount--;
                 remaining.setText(remainingCount + " Remaining Words");
                 // No more words in the list scenario
-                if (koreanWords.getSize() == 0) {
+                if (wordlist.getSize() == 0) {
                     question.setText("Congratulations! No more words remaining.");
                     answer.setTextColor(Color.parseColor("#efb200"));
                     answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
@@ -117,9 +131,9 @@ public class FlashcardActivity extends Activity {
                 }
                 // Else delete current word from Hashmap of vocab words
                 else {
-                    String currentWord = koreanWords.getRandomKoreanWord();
+                    String currentWord = wordlist.getRandomForeignWord();
                     question.setText(currentWord);
-                    answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                    answer.setText(wordlist.getEnglishFromForeign(currentWord));
                 }
                 saveFlashcard();
             }
@@ -129,12 +143,14 @@ public class FlashcardActivity extends Activity {
             @Override
             public void onClick(View v) {
                 areYouSure();
-//                // TODO Add an "are you sure?" question box
-//                koreanWords.populateInitialWordlist();
-//                answer.setTextColor(Color.WHITE);
-//                String currentWord = koreanWords.getRandomKoreanWord();
-//                question.setText(currentWord);
-//                answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FlashcardActivity.this, LevelSelectionActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -148,15 +164,15 @@ public class FlashcardActivity extends Activity {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         // TODO Can probably be refactored
-                        koreanWords.populateInitialWordlist();
+                        wordlist.populateInitialWordlist();
                         answer.setTextColor(Color.parseColor("#571935"));
-                        String currentWord = koreanWords.getRandomKoreanWord();
+                        String currentWord = wordlist.getRandomForeignWord();
                         question.setText(currentWord);
-                        answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                        answer.setText(wordlist.getEnglishFromForeign(currentWord));
                         showAnswer.setEnabled(true);
                         nextWord.setEnabled(true);
                         deleteWord.setEnabled(true);
-                        remainingCount = koreanWords.getSize();
+                        remainingCount = wordlist.getSize();
                         remaining.setText(remainingCount + " Remaining Words");
                         saveFlashcard();
                         break;
@@ -173,11 +189,11 @@ public class FlashcardActivity extends Activity {
     }
 
     private void saveFlashcard() {
-        saveHashmap(this, "wordFile", koreanWords.getWordList());
+        saveHashmap(this, "wordFile" + level, wordlist.getWordList());
     }
 
     private boolean savedFileExists() {
-        return doesFileExist(this, "wordFile");
+        return doesFileExist(this, "wordFile" + level);
     }
 
 }

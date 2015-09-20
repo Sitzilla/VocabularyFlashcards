@@ -10,13 +10,11 @@
         android:layout_height="wrap_content"
         android:text="Questions"
         android:id="@+id/questionTextView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:textSize="30sp"
         android:textColor="#efb200"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_below="@+id/backButtonFlashcards"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -77,7 +75,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:background="#b52eff"
+        android:background="#6e1b9a"
         android:textColor="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
@@ -91,5 +89,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textSize="20sp"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:id="@+id/backButtonFlashcards"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#003591"
         android:textColor="@android:color/white"/>
 </RelativeLayout>
