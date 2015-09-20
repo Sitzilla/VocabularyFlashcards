@@ -67,7 +67,7 @@ public class FlashcardActivity extends Activity {
         showAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer.setTextColor(Color.BLACK);
+                answer.setTextColor(Color.parseColor("#efb200"));
             }
         });
 
@@ -75,7 +75,7 @@ public class FlashcardActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // TODO This can be refactored out to a new method
-                answer.setTextColor(Color.WHITE);
+                answer.setTextColor(Color.parseColor("#571935"));
                 String currentWord = koreanWords.getRandomKoreanWord();
                 question.setText(currentWord);
                 answer.setText(koreanWords.getEnglishFromKorean(currentWord));
@@ -87,8 +87,8 @@ public class FlashcardActivity extends Activity {
         deleteWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer.setTextColor(Color.WHITE);
-                koreanWords.removeKoreanWord((String) question.getText());
+                answer.setTextColor(Color.parseColor("#571935"));
+                        koreanWords.removeKoreanWord((String) question.getText());
                 String currentWord = koreanWords.getRandomKoreanWord();
                 question.setText(currentWord);
                 answer.setText(koreanWords.getEnglishFromKorean(currentWord));
@@ -120,7 +120,7 @@ public class FlashcardActivity extends Activity {
                     case DialogInterface.BUTTON_POSITIVE:
                         // TODO Can probably be refactored
                         koreanWords.populateInitialWordlist();
-                        answer.setTextColor(Color.WHITE);
+                        answer.setTextColor(Color.parseColor("#571935"));
                         String currentWord = koreanWords.getRandomKoreanWord();
                         question.setText(currentWord);
                         answer.setText(koreanWords.getEnglishFromKorean(currentWord));

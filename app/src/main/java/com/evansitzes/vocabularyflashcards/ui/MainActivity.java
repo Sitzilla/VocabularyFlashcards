@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button koreanButton;
-    private Button japaneseButton;
+    private ImageButton koreanButton;
+    private ImageButton japaneseButton;
 
 
     @Override
@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        koreanButton = (Button)findViewById(R.id.koreanButton);
-        japaneseButton = (Button)findViewById(R.id.japaneseButton);
+        koreanButton = (ImageButton)findViewById(R.id.koreanButton);
+        japaneseButton = (ImageButton)findViewById(R.id.japaneseButton);
 
         japaneseButton.setOnClickListener(new View.OnClickListener() {
             @Override

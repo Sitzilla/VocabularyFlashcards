@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="match_parent"
-                android:background="@android:color/white">
+                android:background="#571935">
 
     <TextView
         android:layout_width="wrap_content"
@@ -13,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textColor="#efb200"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -57,7 +58,7 @@
         android:layout_below="@+id/questionTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"
-        android:textColor="@android:color/white"
+        android:textColor="#571935"
         android:textSize="30sp"/>
 
     <Button
