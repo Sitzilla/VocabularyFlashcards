@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by Evan Anger on 7/28/14.
@@ -106,15 +107,18 @@ public class FileUtilities {
     }
 
 
-    public static void saveImage(Context context, Bitmap bitmap, String name) {
+    public static void saveArrayList(Context context, String name, ArrayList<String> vocabWords) {
         File fileDirectory = getFileDirectory(context);
         File fileToWrite = new File(fileDirectory, name);
 
         try {
             FileOutputStream outputStream = new FileOutputStream(fileToWrite);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            for (String word : vocabWords) {
+                outputStream.write(word.getBytes());
+            }
             outputStream.flush();
             outputStream.close();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
