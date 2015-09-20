@@ -41,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startKoreanFlashcards() {
-        Intent intent = new Intent(this, FlashcardActivity.class);
+        Intent intent = new Intent(this, LevelSelectionActivity.class);
+//        Intent intent = new Intent(this, FlashcardActivity.class);
         startActivity(intent);
-
     }
 
 

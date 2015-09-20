@@ -3,7 +3,6 @@ package com.evansitzes.vocabularyflashcards.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +26,8 @@ public class FlashcardActivity extends Activity {
     private Flashcard flashcard = new Flashcard();
     private TextView question;
     private TextView answer;
+    private TextView remaining;
+    private int remainingCount;
     private Button showAnswer;
     private Button nextWord;
     private Button deleteWord;
@@ -39,13 +40,13 @@ public class FlashcardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
 
-        Intent intent = getIntent();
-        question = (TextView)findViewById(R.id.questionTextView);
-        answer = (TextView)findViewById(R.id.answerTextView);
-        showAnswer = (Button)findViewById(R.id.showAnswerButton);
-        nextWord = (Button)findViewById(R.id.nextWordButton);
-        deleteWord = (Button)findViewById(R.id.deleteWordButton);
-        resetWord = (Button)findViewById(R.id.resetWordsButton);
+        question = (TextView) findViewById(R.id.questionTextView);
+        answer = (TextView) findViewById(R.id.answerTextView);
+        remaining = (TextView) findViewById(R.id.remainingWordsTtextView);
+        showAnswer = (Button) findViewById(R.id.showAnswerButton);
+        nextWord = (Button) findViewById(R.id.nextWordButton);
+        deleteWord = (Button) findViewById(R.id.deleteWordButton);
+        resetWord = (Button) findViewById(R.id.resetWordsButton);
 
 
         if (savedFileExists()) {
@@ -54,14 +55,26 @@ public class FlashcardActivity extends Activity {
             koreanWords.populateInitialWordlist();
         }
 
+        // Set counter for number of words remaining in list
+        remainingCount = koreanWords.getSize();
+        remaining.setText(remainingCount + " Remaining Words");
 
+        if (koreanWords.getSize() == 0) {
+            question.setText("Congratulations! No more words remaining.");
+            answer.setTextColor(Color.parseColor("#efb200"));
+            answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
+            showAnswer.setEnabled(false);
+            nextWord.setEnabled(false);
+            deleteWord.setEnabled(false);
+        } else {
+            final String currentWord = koreanWords.getRandomKoreanWord();
+            question.setText(currentWord);
+            answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+        }
         loadFlashcard();
     }
 
     private void loadFlashcard() {
-        final String currentWord = koreanWords.getRandomKoreanWord();
-        question.setText(currentWord);
-        answer.setText(koreanWords.getEnglishFromKorean(currentWord));
 
 
         showAnswer.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +100,27 @@ public class FlashcardActivity extends Activity {
         deleteWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // delete current word from Hashmap of vocab words
                 answer.setTextColor(Color.parseColor("#571935"));
-                        koreanWords.removeKoreanWord((String) question.getText());
-                String currentWord = koreanWords.getRandomKoreanWord();
-                question.setText(currentWord);
-                answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                koreanWords.removeKoreanWord((String) question.getText());
+                remainingCount--;
+                remaining.setText(remainingCount + " Remaining Words");
+                // No more words in the list scenario
+                if (koreanWords.getSize() == 0) {
+                    question.setText("Congratulations! No more words remaining.");
+                    answer.setTextColor(Color.parseColor("#efb200"));
+                    answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
+                    showAnswer.setEnabled(false);
+                    nextWord.setEnabled(false);
+                    deleteWord.setEnabled(false);
+                }
+                // Else delete current word from Hashmap of vocab words
+                else {
+                    String currentWord = koreanWords.getRandomKoreanWord();
+                    question.setText(currentWord);
+                    answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                }
                 saveFlashcard();
             }
         });
@@ -124,6 +153,12 @@ public class FlashcardActivity extends Activity {
                         String currentWord = koreanWords.getRandomKoreanWord();
                         question.setText(currentWord);
                         answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+                        showAnswer.setEnabled(true);
+                        nextWord.setEnabled(true);
+                        deleteWord.setEnabled(true);
+                        remainingCount = koreanWords.getSize();
+                        remaining.setText(remainingCount + " Remaining Words");
+                        saveFlashcard();
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -133,7 +168,7 @@ public class FlashcardActivity extends Activity {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+        builder.setMessage("Are you sure you want to reset your current wordlist to the default list?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }
 

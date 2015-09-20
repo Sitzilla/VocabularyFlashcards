@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="flashcardActivity">Flashcard Activity</string>
+    <string name="levelSelectionActivity">levelSelectionActivity</string>
+    <string name="title_activity_level_selection">LevelSelectionActivity</string>
 </resources>

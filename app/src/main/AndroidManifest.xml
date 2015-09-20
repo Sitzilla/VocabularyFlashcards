@@ -16,14 +16,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.FlashcardActivity"
             android:label="@string/flashcardActivity"
-            android:screenOrientation="portrait" >
-            android:parentActivityName=".ui.MainActivity" >
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.LevelSelectionActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
+                android:value=".ui.LevelSelectionActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.LevelSelectionActivity"
+            android:label="@string/title_activity_level_selection"
+            android:parentActivityName=".ui.MainActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.evansitzes.vocabularyflashcards.ui.MainActivity" />
         </activity>
     </application>
 
