@@ -12,6 +12,8 @@ import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.evansitzes.vocabularyflashcards.model.KoreanWords;
 
+import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveArrayList;
+
 /**
  * Created by evan on 9/20/15.
  */
@@ -22,6 +24,7 @@ public class FlashcardActivity extends Activity {
     private TextView answer;
     private Button showAnswer;
     private Button nextWord;
+    private Button deleteWord;
     private KoreanWords koreanWords = new KoreanWords();
 
 
@@ -35,7 +38,8 @@ public class FlashcardActivity extends Activity {
         answer = (TextView)findViewById(R.id.answerTextView);
         showAnswer = (Button)findViewById(R.id.showAnswerButton);
         nextWord = (Button)findViewById(R.id.nextWordButton);
-
+        deleteWord = (Button)findViewById(R.id.deleteWordButton);
+        koreanWords.populateWordlist();
 
 //        FileUtilities.saveArrayList(this, bitmap, file.getName());
 
@@ -67,6 +71,22 @@ public class FlashcardActivity extends Activity {
             }
         });
 
+        deleteWord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answer.setTextColor(Color.WHITE);
+                koreanWords.removeKoreanWord((String) question.getText());
+                String currentWord = koreanWords.getRandomKoreanWord();
+                question.setText(currentWord);
+                answer.setText(koreanWords.getEnglishFromKorean(currentWord));
+
+            }
+        });
+
+    }
+
+    private void saveFlashcard() {
+        saveArrayList(this, "wordFile", koreanWords.getWordList());
     }
 
 }

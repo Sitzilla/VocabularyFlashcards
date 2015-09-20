@@ -27,8 +27,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button2"
+        android:text="Delete Word"
+        android:id="@+id/deleteWordButton"
         android:layout_alignTop="@+id/showAnswerButton"
         android:layout_toLeftOf="@+id/questionTextView"
         android:layout_toStartOf="@+id/questionTextView"/>
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="Next Word"
         android:id="@+id/nextWordButton"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/deleteWordButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:background="#1cb836"

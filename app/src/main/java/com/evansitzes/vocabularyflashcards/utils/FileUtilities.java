@@ -14,8 +14,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Evan Anger on 7/28/14.
@@ -107,17 +108,15 @@ public class FileUtilities {
     }
 
 
-    public static void saveArrayList(Context context, String name, ArrayList<String> vocabWords) {
+    public static void saveArrayList(Context context, String name, HashMap<String, String> vocabWords) {
         File fileDirectory = getFileDirectory(context);
         File fileToWrite = new File(fileDirectory, name);
 
         try {
             FileOutputStream outputStream = new FileOutputStream(fileToWrite);
-            for (String word : vocabWords) {
-                outputStream.write(word.getBytes());
-            }
-            outputStream.flush();
-            outputStream.close();
+            ObjectOutputStream objectOutputStream= new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(vocabWords);
+            objectOutputStream.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

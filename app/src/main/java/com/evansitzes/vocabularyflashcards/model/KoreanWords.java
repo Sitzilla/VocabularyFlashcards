@@ -8,8 +8,9 @@ import java.util.Random;
  */
 public class KoreanWords {
     private HashMap<String, String> koreanToEnglish = new HashMap<String, String>();
+    private boolean wordlistExsts;
 
-    public KoreanWords() {
+    public void populateWordlist() {
         koreanToEnglish.put("것 ", "A thing or an object");
         koreanToEnglish.put("주다", "  to give");
         koreanToEnglish.put("듣다", "  to hear");
@@ -92,6 +93,10 @@ public class KoreanWords {
 //        koreanToEnglish.put("사랑에 빠지다", "to fall in love");
     }
 
+    public HashMap<String, String> getWordList() {
+        return koreanToEnglish;
+    }
+
     public String getRandomKoreanWord() {
         Random generator = new Random();
         Object[] words = koreanToEnglish.keySet().toArray();
@@ -102,6 +107,10 @@ public class KoreanWords {
 
     public String getEnglishFromKorean(String korean) {
         return koreanToEnglish.get(korean);
+    }
+
+    public void removeKoreanWord(String korean) {
+        koreanToEnglish.remove(korean);
     }
 
 }
