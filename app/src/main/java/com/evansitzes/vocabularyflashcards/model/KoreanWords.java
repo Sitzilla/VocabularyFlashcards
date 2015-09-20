@@ -8,9 +8,8 @@ import java.util.Random;
  */
 public class KoreanWords {
     private HashMap<String, String> koreanToEnglish = new HashMap<String, String>();
-    private boolean wordlistExsts;
 
-    public void populateWordlist() {
+    public void populateInitialWordlist() {
         koreanToEnglish.put("것 ", "A thing or an object");
         koreanToEnglish.put("주다", "  to give");
         koreanToEnglish.put("듣다", "  to hear");
@@ -113,4 +112,7 @@ public class KoreanWords {
         koreanToEnglish.remove(korean);
     }
 
+    public void setWordList(HashMap<String, String> koreanToEnglish) {
+        this.koreanToEnglish = koreanToEnglish;
+    }
 }

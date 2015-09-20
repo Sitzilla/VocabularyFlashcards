@@ -10,10 +10,12 @@ import com.evansitzes.vocabularyflashcards.VocabularyFlashcardsApplicationSettin
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -123,6 +125,30 @@ public class FileUtilities {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static HashMap<String, String> getArrayList(Context context, String name) {
+        File fileDirectory = getFileDirectory(context);
+        File fileToRead = new File(fileDirectory, name);
+        HashMap<String, String> newlyReadInMap = new HashMap<String, String>();
+
+        try {
+            FileInputStream fileInputStream  = new FileInputStream(fileToRead);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            newlyReadInMap = (HashMap) objectInputStream.readObject();
+            objectInputStream.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return newlyReadInMap;
+
     }
 
 }

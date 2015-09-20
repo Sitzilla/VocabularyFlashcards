@@ -12,6 +12,7 @@ import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.evansitzes.vocabularyflashcards.model.KoreanWords;
 
+import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getArrayList;
 import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveArrayList;
 
 /**
@@ -39,9 +40,12 @@ public class FlashcardActivity extends Activity {
         showAnswer = (Button)findViewById(R.id.showAnswerButton);
         nextWord = (Button)findViewById(R.id.nextWordButton);
         deleteWord = (Button)findViewById(R.id.deleteWordButton);
-        koreanWords.populateWordlist();
 
-//        FileUtilities.saveArrayList(this, bitmap, file.getName());
+        if (savedFileExists()) {
+            koreanWords.setWordList(getArrayList(this, "wordFile"));
+        } else {
+            koreanWords.populateInitialWordlist();
+        }
 
 
         loadFlashcard();
@@ -79,7 +83,7 @@ public class FlashcardActivity extends Activity {
                 String currentWord = koreanWords.getRandomKoreanWord();
                 question.setText(currentWord);
                 answer.setText(koreanWords.getEnglishFromKorean(currentWord));
-
+                saveFlashcard();
             }
         });
 
@@ -87,6 +91,10 @@ public class FlashcardActivity extends Activity {
 
     private void saveFlashcard() {
         saveArrayList(this, "wordFile", koreanWords.getWordList());
+    }
+
+    private boolean savedFileExists() {
+        return true;
     }
 
 }
