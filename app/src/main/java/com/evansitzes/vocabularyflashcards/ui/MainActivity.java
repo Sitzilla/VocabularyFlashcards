@@ -3,6 +3,8 @@ package com.evansitzes.vocabularyflashcards.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -40,9 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void startKoreanFlashcards() {
         Intent intent = new Intent(this, LevelSelectionActivity.class);
-//        Intent intent = new Intent(this, FlashcardActivity.class);
         startActivity(intent);
     }
 

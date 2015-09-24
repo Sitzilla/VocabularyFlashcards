@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.evansitzes.vocabularyflashcards" >
 
+    <uses-sdk android:minSdkVersion="11" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,25 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.FlashcardActivity"
-            android:label="@string/flashcardActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.LevelSelectionActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.LevelSelectionActivity" />
-        </activity>
-
         <activity
             android:name=".ui.LevelSelectionActivity"
             android:label="@string/title_activity_level_selection"
             android:parentActivityName=".ui.MainActivity" >
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.evansitzes.vocabularyflashcards.ui.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.FlashcardsActivity"
+            android:label="@string/title_activity_flashcards"
+            android:parentActivityName=".ui.LevelSelectionActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.evansitzes.vocabularyflashcards.ui.LevelSelectionActivity" />
         </activity>
     </application>
 
