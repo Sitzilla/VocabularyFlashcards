@@ -9,4 +9,5 @@
     <string name="action_refresh">Refresh</string>
     <string name="title_activity_flashcard">FlashcardActivity</string>
     <string name="title_activity_flashcards">Flashcards</string>
+    <string name="action_reset">Reset Wordlist</string>
 </resources>

@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
 
@@ -28,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
         japaneseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Sorry, no Japanese vocabulary words yet", Toast.LENGTH_SHORT).show();
-            }
+                startKoreanFlashcards();            }
         });
 
         koreanButton.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void startKoreanFlashcards() {
         Intent intent = new Intent(this, LevelSelectionActivity.class);
+        intent.putExtra("language", "korean");
+        startActivity(intent);
+    }
+
+    private void startJapaneseFlashcards() {
+        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        intent.putExtra("language", "japanese");
         startActivity(intent);
     }
 

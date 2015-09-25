@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:text="Questions"
         android:id="@+id/questionTextView"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="51dp"
         android:textSize="30sp"
         android:textColor="#efb200"
-        android:layout_below="@+id/backButtonFlashcards"
+        android:layout_below="@+id/remainingWordsTtextView"
         android:layout_centerHorizontal="true"/>
 
     <Button
@@ -36,15 +36,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete Current Word"
+        android:text="Delete"
         android:id="@+id/deleteWordButton"
         android:textColor="@android:color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:background="#d02d2b"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:paddingRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -71,19 +71,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reset Word List"
-        android:id="@+id/resetWordsButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="#6e1b9a"
-        android:textColor="@android:color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,8 +79,8 @@
         android:textSize="20sp"
         android:textColor="@android:color/white"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/resetWordsButton"
-        android:layout_alignEnd="@+id/resetWordsButton"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -102,7 +89,17 @@
         android:id="@+id/backButtonFlashcards"
         android:background="#003591"
         android:textColor="@android:color/white"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate"
+        android:id="@+id/rateButtonFlashcards"
+        android:layout_alignTop="@+id/deleteWordButton"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:background="#492491"/>
 </RelativeLayout>

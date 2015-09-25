@@ -31,7 +31,7 @@ public class FlashcardsActivity extends AppCompatActivity {
     private Button showAnswer;
     private Button nextWord;
     private Button deleteWord;
-    private Button resetWord;
+    private Button rateWord;
     private Button back;
     private String level;
 
@@ -56,7 +56,7 @@ public class FlashcardsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main_actions, menu);
+        getMenuInflater().inflate(R.menu.menu_flashcards, menu);
         return true;
     }
 
@@ -68,6 +68,9 @@ public class FlashcardsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 loadPage();
+                return true;
+            case R.id.action_reset_wordlist:
+                resetWordlist();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -81,7 +84,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         showAnswer = (Button) findViewById(R.id.showAnswerButton);
         nextWord = (Button) findViewById(R.id.nextWordButton);
         deleteWord = (Button) findViewById(R.id.deleteWordButton);
-        resetWord = (Button) findViewById(R.id.resetWordsButton);
+        rateWord = (Button) findViewById(R.id.rateButtonFlashcards);
         back = (Button) findViewById(R.id.backButtonFlashcards);
 
 
@@ -122,46 +125,20 @@ public class FlashcardsActivity extends AppCompatActivity {
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO This can be refactored out to a new method
-                answer.setTextColor(Color.parseColor("#571935"));
-                String currentWord = wordlist.getRandomForeignWord();
-                question.setText(currentWord);
-                answer.setText(wordlist.getEnglishFromForeign(currentWord));
-
+                nextWord();
             }
         });
         deleteWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // delete current word from Hashmap of vocab words
-                answer.setTextColor(Color.parseColor("#571935"));
-                wordlist.removeForeignWord((String) question.getText());
-                remainingCount--;
-                remaining.setText(remainingCount + " Remaining Words");
-                // No more words in the list scenario
-                if (wordlist.getSize() == 0) {
-                    question.setText("Congratulations! No more words remaining.");
-                    answer.setTextColor(Color.parseColor("#efb200"));
-                    answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
-                    showAnswer.setEnabled(false);
-                    nextWord.setEnabled(false);
-                    deleteWord.setEnabled(false);
-                }
-                // Else delete current word from Hashmap of vocab words
-                else {
-                    String currentWord = wordlist.getRandomForeignWord();
-                    question.setText(currentWord);
-                    answer.setText(wordlist.getEnglishFromForeign(currentWord));
-                }
-                saveFlashcard();
+                deleteWord();
             }
         });
 
-        resetWord.setOnClickListener(new View.OnClickListener() {
+        rateWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                areYouSure();
+                rateWord();
             }
         });
 
@@ -176,7 +153,64 @@ public class FlashcardsActivity extends AppCompatActivity {
 
     }
 
-    private void areYouSure() {
+    private void deleteWord() {
+        // delete current word from Hashmap of vocab words
+        answer.setTextColor(Color.parseColor("#571935"));
+        wordlist.removeForeignWord((String) question.getText());
+        remainingCount--;
+        remaining.setText(remainingCount + " Remaining Words");
+        // No more words in the list scenario
+        if (wordlist.getSize() == 0) {
+            question.setText("Congratulations! No more words remaining.");
+            answer.setTextColor(Color.parseColor("#efb200"));
+            answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
+            showAnswer.setEnabled(false);
+            nextWord.setEnabled(false);
+            deleteWord.setEnabled(false);
+        }
+        // Else delete current word from Hashmap of vocab words
+        else {
+            String currentWord = wordlist.getRandomForeignWord();
+            question.setText(currentWord);
+            answer.setText(wordlist.getEnglishFromForeign(currentWord));
+        }
+        saveFlashcard();
+    }
+
+    private void nextWord() {
+        answer.setTextColor(Color.parseColor("#571935"));
+        String currentWord = wordlist.getRandomForeignWord();
+        question.setText(currentWord);
+        answer.setText(wordlist.getEnglishFromForeign(currentWord));
+
+    }
+
+    private void rateWord() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // TODO Can probably be refactored
+
+                        nextWord();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+
+                        nextWord();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you know the word").setPositiveButton("Got it", dialogClickListener)
+                .setNegativeButton("Not yet", dialogClickListener).show();
+
+    }
+
+    private void resetWordlist() {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

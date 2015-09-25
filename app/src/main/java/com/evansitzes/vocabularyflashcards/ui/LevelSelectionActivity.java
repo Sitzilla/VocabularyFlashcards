@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.evansitzes.vocabularyflashcards.R;
+import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
 
 public class LevelSelectionActivity extends AppCompatActivity {
 
-    private Button basicWordlist;
-    private Button intermediateWordlist;
+    private Button selectionButtonOne;
+    private Button selectionButtonTwo;
     private Button back;
+    private String level;
 
 
     @Override
@@ -22,29 +24,70 @@ public class LevelSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_selection);
 
-        basicWordlist = (Button) findViewById(R.id.basicWordListButton);
-        intermediateWordlist = (Button) findViewById(R.id.intermediateWordListButton);
+        level = getIntent().getStringExtra("language");
+        selectionButtonOne = (Button) findViewById(R.id.selectionButtonOne);
+        selectionButtonTwo = (Button) findViewById(R.id.selectionButtonTwo);
         back = (Button) findViewById(R.id.backButton);
 
-        loadSelection();
+
+        // Determines what level of flashcards to use
+        if (level.equals("korean")) {
+            selectionButtonOne.setText("Basic Korean Words");
+            selectionButtonTwo.setText("Intermediate Korean Words");
+            loadKoreanSelection();
+        } else if (level.equals("japanese")) {
+            selectionButtonOne.setText("JLPT N2 - Reading Vocab");
+            selectionButtonTwo.setText("JLPT N2 - Nouns");
+            loadJapaneseSelection();
+        }
+
     }
 
-    private void loadSelection() {
+    private void loadKoreanSelection() {
 
-        basicWordlist.setOnClickListener(new View.OnClickListener() {
+        selectionButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", "basicKorean");
+                intent.putExtra("level", FlashcardType.BASIC_KOREAN);
                 startActivity(intent);
             }
         });
 
-        intermediateWordlist.setOnClickListener(new View.OnClickListener() {
+        selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", "intermediateKorean");
+                intent.putExtra("level", FlashcardType.INTERMEDIATE_KOREAN);
+                startActivity(intent);
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void loadJapaneseSelection() {
+
+        selectionButtonOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
+                intent.putExtra("level", FlashcardType.READING_JAPANESE);
+                startActivity(intent);
+            }
+        });
+
+        selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
+                intent.putExtra("level", FlashcardType.NOUNS_JAPANESE);
                 startActivity(intent);
             }
         });

@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Basic Word List"
-        android:id="@+id/basicWordListButton"
+        android:id="@+id/selectionButtonOne"
         android:layout_below="@+id/mainTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -45,8 +45,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Intermediate Word List"
-        android:id="@+id/intermediateWordListButton"
-        android:layout_below="@+id/basicWordListButton"
+        android:id="@+id/selectionButtonTwo"
+        android:layout_below="@+id/selectionButtonOne"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 </RelativeLayout>
