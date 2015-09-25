@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton koreanButton;
     private ImageButton japaneseButton;
+    private ImageButton chineseButton;
+
 
 
     @Override
@@ -24,18 +26,23 @@ public class MainActivity extends AppCompatActivity {
 
         koreanButton = (ImageButton)findViewById(R.id.koreanButton);
         japaneseButton = (ImageButton)findViewById(R.id.japaneseButton);
-
-        japaneseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startJapaneseFlashcards();            }
-        });
+        chineseButton = (ImageButton)findViewById(R.id.chineseButton);
 
         koreanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startKoreanFlashcards();
             }
+        });
+        japaneseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJapaneseFlashcards();            }
+        });
+        chineseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startChineseFlashcards();            }
         });
 
 
@@ -61,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    private void startChineseFlashcards() {
+        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        intent.putExtra("language", LanguageType.CHINESE);
+        startActivity(intent);
+    }
 }

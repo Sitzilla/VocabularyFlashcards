@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
 import com.evansitzes.vocabularyflashcards.model.AdvancedKoreanWords;
+import com.evansitzes.vocabularyflashcards.model.BasicChineseWords;
 import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.evansitzes.vocabularyflashcards.model.IntermediateKoreanWords;
@@ -68,6 +69,9 @@ public class FlashcardsActivity extends AppCompatActivity {
                 break;
             case FlashcardType.KANJI_JAPANESE:
                 this.wordlist = new KanjiJapanese();
+                break;
+            case FlashcardType.BASIC_CHINESE:
+                this.wordlist = new BasicChineseWords();
                 break;
         }
 

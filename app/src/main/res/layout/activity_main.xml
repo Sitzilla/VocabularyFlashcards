@@ -31,28 +31,56 @@
         android:layout_centerHorizontal="true"/>
 
     <ImageButton
-        android:src="@drawable/japan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/japaneseButton"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
-        android:background="#FF571935"
-        android:layout_marginTop="57dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignRight="@+id/mainWelcome"
-        android:layout_alignEnd="@+id/mainWelcome"/>
-
-    <ImageButton
         android:src="@drawable/korea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/koreanButton"
-        android:layout_alignTop="@+id/japaneseButton"
-        android:layout_alignBottom="@+id/japaneseButton"
+
         android:minHeight="75dp"
         android:minWidth="125dp"
+        android:background="#FF571935"
+        android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/mainWelcome"
-        android:layout_alignStart="@+id/mainWelcome"
-        android:background="#FF571935"/>
+        android:layout_alignStart="@+id/mainWelcome"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="125dp"
+        android:layout_height="85dp"
+        android:layout_below="@+id/koreanButton"
+        android:layout_alignLeft="@+id/koreanButton"
+        android:layout_alignStart="@+id/koreanButton"
+        android:layout_marginTop="35dp"
+        android:weightSum="1"
+        android:id="@+id/linearLayout">
+
+        <ImageButton
+            android:src="@drawable/china"
+            android:id="@+id/chineseButton"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FF571935"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="125dp"
+        android:layout_height="85dp"
+        android:layout_alignTop="@+id/koreanButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageButton
+            android:src="@drawable/japan"
+            android:id="@+id/japaneseButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:background="#FF571935"
+            android:layout_below="@+id/textView"
+            android:layout_alignRight="@+id/mainWelcome"
+            android:layout_alignEnd="@+id/mainWelcome"/>
+    </LinearLayout>
 </RelativeLayout>

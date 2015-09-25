@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Questions"
         android:id="@+id/questionTextView"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="37dp"
         android:textSize="30sp"
         android:textColor="#efb200"
         android:layout_below="@+id/remainingWordsTtextView"
@@ -63,13 +63,11 @@
         android:layout_height="wrap_content"
         android:text="Answer"
         android:id="@+id/answerTextView"
-        android:layout_below="@+id/questionTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="29dp"
         android:textColor="#571935"
         android:textSize="30sp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_below="@+id/questionTextView"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
