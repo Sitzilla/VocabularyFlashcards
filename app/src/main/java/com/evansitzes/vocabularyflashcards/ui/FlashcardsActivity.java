@@ -1,8 +1,8 @@
 package com.evansitzes.vocabularyflashcards.ui;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +39,13 @@ public class FlashcardsActivity extends AppCompatActivity {
     private Button rateWord;
     private Button back;
     private String level;
+    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
+        actionBar=getActionBar();
 
         level = getIntent().getStringExtra("level");
 
@@ -91,6 +93,9 @@ public class FlashcardsActivity extends AppCompatActivity {
                 return true;
             case R.id.action_reset_wordlist:
                 resetWordlist();
+                return true;
+            case android.R.id.home:
+                onBackPressed();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -165,13 +170,23 @@ public class FlashcardsActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FlashcardsActivity.this, LevelSelectionActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
 
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            finish();
+//            return true;
+//        }
+//
+//        return super.onKeyDown(keyCode, event);
+//    }
+
 
     private void deleteWord() {
         // delete current word from Hashmap of vocab words

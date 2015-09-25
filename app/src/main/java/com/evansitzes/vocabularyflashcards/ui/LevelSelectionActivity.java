@@ -37,7 +37,9 @@ public class LevelSelectionActivity extends AppCompatActivity {
         if (level.equals(LanguageType.KOREAN)) {
             selectionButtonOne.setText("Basic Korean Words");
             selectionButtonTwo.setText("Intermediate Korean Words");
+            selectionButtonTwo.setVisibility(View.GONE);
             selectionButtonThree.setText("Advanced Korean Words");
+            selectionButtonThree.setVisibility(View.GONE);
             loadKoreanSelection();
         } else if (level.equals(LanguageType.JAPANESE)) {
             selectionButtonOne.setText("JLPT N2 - Reading Vocab");
