@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.evansitzes.vocabularyflashcards.R;
+import com.evansitzes.vocabularyflashcards.helpers.LanguageType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         japaneseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startKoreanFlashcards();            }
+                startJapaneseFlashcards();            }
         });
 
         koreanButton.setOnClickListener(new View.OnClickListener() {
@@ -50,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void startKoreanFlashcards() {
         Intent intent = new Intent(this, LevelSelectionActivity.class);
-        intent.putExtra("language", "korean");
+        intent.putExtra("language", LanguageType.KOREAN);
         startActivity(intent);
     }
 
     private void startJapaneseFlashcards() {
         Intent intent = new Intent(this, LevelSelectionActivity.class);
-        intent.putExtra("language", "japanese");
+        intent.putExtra("language", LanguageType.JAPANESE);
         startActivity(intent);
     }
 

@@ -7,8 +7,8 @@ public class IntermediateKoreanWords extends Flashcard {
 
     @Override
     public void populateInitialWordlist() {
-        foreignToEnglish.put("hardword1 ", "hardanswer1");
-        foreignToEnglish.put("hardword2", "hardanswer2");
-        foreignToEnglish.put("hardword3", "hardanswer3");
+        foreignToEnglish.put("intermediateword1 ", "intermediateanswer1");
+        foreignToEnglish.put("intermediateword2", "intermediateanswer2");
+        foreignToEnglish.put("intermediateword3", "intermediateanswer3");
     }
 }

@@ -10,11 +10,13 @@ import android.widget.Button;
 
 import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
+import com.evansitzes.vocabularyflashcards.helpers.LanguageType;
 
 public class LevelSelectionActivity extends AppCompatActivity {
 
     private Button selectionButtonOne;
     private Button selectionButtonTwo;
+    private Button selectionButtonThree;
     private Button back;
     private String level;
 
@@ -27,17 +29,20 @@ public class LevelSelectionActivity extends AppCompatActivity {
         level = getIntent().getStringExtra("language");
         selectionButtonOne = (Button) findViewById(R.id.selectionButtonOne);
         selectionButtonTwo = (Button) findViewById(R.id.selectionButtonTwo);
+        selectionButtonThree = (Button) findViewById(R.id.selectionButtonThree);
         back = (Button) findViewById(R.id.backButton);
 
 
         // Determines what level of flashcards to use
-        if (level.equals("korean")) {
+        if (level.equals(LanguageType.KOREAN)) {
             selectionButtonOne.setText("Basic Korean Words");
             selectionButtonTwo.setText("Intermediate Korean Words");
+            selectionButtonThree.setText("Advanced Korean Words");
             loadKoreanSelection();
-        } else if (level.equals("japanese")) {
+        } else if (level.equals(LanguageType.JAPANESE)) {
             selectionButtonOne.setText("JLPT N2 - Reading Vocab");
             selectionButtonTwo.setText("JLPT N2 - Nouns");
+            selectionButtonThree.setText("JLPT N2 - Kanji");
             loadJapaneseSelection();
         }
 
@@ -59,6 +64,15 @@ public class LevelSelectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
                 intent.putExtra("level", FlashcardType.INTERMEDIATE_KOREAN);
+                startActivity(intent);
+            }
+        });
+
+        selectionButtonThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
+                intent.putExtra("level", FlashcardType.ADVANCED_KOREAN);
                 startActivity(intent);
             }
         });
@@ -88,6 +102,15 @@ public class LevelSelectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
                 intent.putExtra("level", FlashcardType.NOUNS_JAPANESE);
+                startActivity(intent);
+            }
+        });
+
+        selectionButtonThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
+                intent.putExtra("level", FlashcardType.KANJI_JAPANESE);
                 startActivity(intent);
             }
         });

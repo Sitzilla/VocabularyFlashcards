@@ -13,9 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.evansitzes.vocabularyflashcards.R;
+import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
+import com.evansitzes.vocabularyflashcards.model.AdvancedKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.evansitzes.vocabularyflashcards.model.IntermediateKoreanWords;
+import com.evansitzes.vocabularyflashcards.model.KanjiJapanese;
+import com.evansitzes.vocabularyflashcards.model.NounsJapanese;
+import com.evansitzes.vocabularyflashcards.model.ReadingVocabJapanese;
 
 import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.doesFileExist;
 import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getHashmap;
@@ -43,10 +48,25 @@ public class FlashcardsActivity extends AppCompatActivity {
         level = getIntent().getStringExtra("level");
 
         // Determines what level of flashcards to use
-        if (level.equals("basicKorean")) {
-            this.wordlist = new BasicKoreanWords();
-        } else {
-            this.wordlist = new IntermediateKoreanWords();
+        switch (level) {
+            case FlashcardType.BASIC_KOREAN:
+                this.wordlist = new BasicKoreanWords();
+                break;
+            case FlashcardType.INTERMEDIATE_KOREAN:
+                this.wordlist = new IntermediateKoreanWords();
+                break;
+            case FlashcardType.ADVANCED_KOREAN:
+                this.wordlist = new AdvancedKoreanWords();
+                break;
+            case FlashcardType.READING_JAPANESE:
+                this.wordlist = new ReadingVocabJapanese();
+                break;
+            case FlashcardType.NOUNS_JAPANESE:
+                this.wordlist = new NounsJapanese();
+                break;
+            case FlashcardType.KANJI_JAPANESE:
+                this.wordlist = new KanjiJapanese();
+                break;
         }
 
         loadPage();

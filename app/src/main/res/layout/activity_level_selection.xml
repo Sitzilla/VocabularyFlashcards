@@ -49,4 +49,14 @@
         android:layout_below="@+id/selectionButtonOne"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Advanced Word List"
+        android:id="@+id/selectionButtonThree"
+        android:layout_below="@+id/selectionButtonTwo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>
