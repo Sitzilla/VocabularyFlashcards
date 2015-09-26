@@ -47,7 +47,6 @@ public class FlashcardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
         actionBar=getActionBar();
-
         level = getIntent().getStringExtra("level");
 
         // Determines what level of flashcards to use
@@ -117,6 +116,9 @@ public class FlashcardsActivity extends AppCompatActivity {
         rateWord = (Button) findViewById(R.id.rateButtonFlashcards);
         back = (Button) findViewById(R.id.backButtonFlashcards);
 
+        // If file already exists in storage for the wordlist then set the current
+        // variable 'wordlist' to it, otherwise create a new file and populate it with
+        // the method populateInitialWordlist()
         if (savedFileExists()) {
             wordlist.setWordList(getHashmap(this, "wordFile" + level));
         } else {
@@ -124,16 +126,10 @@ public class FlashcardsActivity extends AppCompatActivity {
         }
 
         // Set counter for number of words remaining in list
-        remainingCount = wordlist.getSize();
-        remaining.setText(remainingCount + " Remaining Words");
+        setWordlistCounter();
 
-        if (wordlist.getSize() == 0) {
-            question.setText("Congratulations! No more words remaining.");
-            answer.setVisibility(View.VISIBLE);
-            answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
-            showAnswer.setEnabled(false);
-            nextWord.setEnabled(false);
-            deleteWord.setEnabled(false);
+        if (remainingCount == 0) {
+            setEndOfListView();
         } else {
             final String currentWord = wordlist.getRandomForeignWord();
             question.setText(currentWord);
@@ -142,19 +138,16 @@ public class FlashcardsActivity extends AppCompatActivity {
     }
 
     private void listenForClickEvents() {
-
-
         showAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer.setVisibility(View.VISIBLE);
+                showcurrentWord();
             }
         });
-
         nextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextWord();
+                showNextWord();
             }
         });
         deleteWord.setOnClickListener(new View.OnClickListener() {
@@ -163,78 +156,79 @@ public class FlashcardsActivity extends AppCompatActivity {
                 deleteWord();
             }
         });
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-
     }
 
     private void deleteWord() {
         // delete current word from Hashmap of vocab words
-        answer.setVisibility(View.INVISIBLE);
         wordlist.removeForeignWord((String) question.getText());
-        remainingCount--;
-        remaining.setText(remainingCount + " Remaining Words");
+        setWordlistCounter();
+
         // No more words in the list scenario
-        if (wordlist.getSize() == 0) {
-            question.setText("Congratulations! No more words remaining.");
-            answer.setVisibility(View.VISIBLE);
-            answer.setText("Start a new list or press \"Reset Wordlist\" to use this list again");
-            showAnswer.setEnabled(false);
-            nextWord.setEnabled(false);
-            deleteWord.setEnabled(false);
+        if (remainingCount == 0) {
+            setEndOfListView();
         }
         // Else delete current word from Hashmap of vocab words
         else {
-            String currentWord = wordlist.getRandomForeignWord();
-            question.setText(currentWord);
-            answer.setText(wordlist.getEnglishFromForeign(currentWord));
+            showNextWord();
         }
         saveFlashcard();
     }
 
-    private void nextWord() {
+    private void showcurrentWord() {
+        answer.setVisibility(View.VISIBLE);
+    }
+
+    private void showNextWord() {
         answer.setVisibility(View.INVISIBLE);
         String currentWord = wordlist.getRandomForeignWord();
         question.setText(currentWord);
         answer.setText(wordlist.getEnglishFromForeign(currentWord));
+    }
 
+    private void setWordlistCounter() {
+        remainingCount = wordlist.getSize();
+        remaining.setText(remainingCount + " Remaining Words");
+    }
+
+    private void setEndOfListView() {
+        question.setText("Congratulations! No more words remaining.");
+        answer.setVisibility(View.VISIBLE);
+        answer.setText("Start a new list or press \"Reset Wordlist\" to use this list again");
+        showAnswer.setEnabled(false);
+        nextWord.setEnabled(false);
+        deleteWord.setEnabled(false);
     }
 
     private void resetWordlist() {
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // TODO Can probably be refactored
-                        wordlist.populateInitialWordlist();
-                        answer.setVisibility(View.INVISIBLE);
-                        String currentWord = wordlist.getRandomForeignWord();
-                        question.setText(currentWord);
-                        answer.setText(wordlist.getEnglishFromForeign(currentWord));
-                        showAnswer.setEnabled(true);
-                        nextWord.setEnabled(true);
-                        deleteWord.setEnabled(true);
-                        remainingCount = wordlist.getSize();
-                        remaining.setText(remainingCount + " Remaining Words");
-                        saveFlashcard();
-                        break;
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    wordlist.populateInitialWordlist();
+                    showAnswer.setEnabled(true);
+                    nextWord.setEnabled(true);
+                    deleteWord.setEnabled(true);
+                    setWordlistCounter();
+                    saveFlashcard();
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
             }
         };
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to reset your current wordlist to the default list?").setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
+
+        showNextWord();
     }
 
     private void saveFlashcard() {
