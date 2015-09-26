@@ -3,7 +3,6 @@ package com.evansitzes.vocabularyflashcards.ui;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -129,7 +128,7 @@ public class FlashcardsActivity extends AppCompatActivity {
 
         if (wordlist.getSize() == 0) {
             question.setText("Congratulations! No more words remaining.");
-            answer.setTextColor(Color.parseColor("#efb200"));
+            answer.setVisibility(View.VISIBLE);
             answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
             showAnswer.setEnabled(false);
             nextWord.setEnabled(false);
@@ -147,7 +146,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         showAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer.setTextColor(Color.parseColor("#efb200"));
+                answer.setVisibility(View.VISIBLE);
             }
         });
 
@@ -194,14 +193,14 @@ public class FlashcardsActivity extends AppCompatActivity {
 
     private void deleteWord() {
         // delete current word from Hashmap of vocab words
-        answer.setTextColor(Color.parseColor("#571935"));
+        answer.setVisibility(View.INVISIBLE);
         wordlist.removeForeignWord((String) question.getText());
         remainingCount--;
         remaining.setText(remainingCount + " Remaining Words");
         // No more words in the list scenario
         if (wordlist.getSize() == 0) {
             question.setText("Congratulations! No more words remaining.");
-            answer.setTextColor(Color.parseColor("#efb200"));
+            answer.setVisibility(View.VISIBLE);
             answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
             showAnswer.setEnabled(false);
             nextWord.setEnabled(false);
@@ -217,7 +216,7 @@ public class FlashcardsActivity extends AppCompatActivity {
     }
 
     private void nextWord() {
-        answer.setTextColor(Color.parseColor("#571935"));
+        answer.setVisibility(View.INVISIBLE);
         String currentWord = wordlist.getRandomForeignWord();
         question.setText(currentWord);
         answer.setText(wordlist.getEnglishFromForeign(currentWord));
@@ -257,7 +256,7 @@ public class FlashcardsActivity extends AppCompatActivity {
                     case DialogInterface.BUTTON_POSITIVE:
                         // TODO Can probably be refactored
                         wordlist.populateInitialWordlist();
-                        answer.setTextColor(Color.parseColor("#571935"));
+                        answer.setVisibility(View.INVISIBLE);
                         String currentWord = wordlist.getRandomForeignWord();
                         question.setText(currentWord);
                         answer.setText(wordlist.getEnglishFromForeign(currentWord));

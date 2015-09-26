@@ -7,7 +7,7 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="com.evansitzes.vocabularyflashcards.ui.FlashcardsActivity"
-                android:background="#571935">
+                android:background="@drawable/gradient">
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,20 +18,8 @@
         android:textSize="30sp"
         android:textColor="#efb200"
         android:layout_below="@+id/remainingWordsTtextView"
-        android:layout_centerHorizontal="true"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Show Answer"
-        android:id="@+id/showAnswerButton"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="130dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="#a8e7ff"
-        android:textColor="@android:color/black"
-        android:minHeight="75dp"/>
+        android:layout_centerHorizontal="true"
+        style="@style/header_text"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -39,24 +27,13 @@
         android:text="Delete"
         android:id="@+id/deleteWordButton"
         android:textColor="@android:color/white"
-        android:background="#d02d2b"
+        android:background="@drawable/delete_button_background"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Next Word"
-        android:id="@+id/nextWordButton"
-        android:background="#1cb836"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="29dp"
-        android:layout_above="@+id/deleteWordButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentEnd="true"
+        style="@style/button_text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -64,10 +41,14 @@
         android:text="Answer"
         android:id="@+id/answerTextView"
         android:layout_marginTop="29dp"
-        android:textColor="#571935"
+        android:textColor="#efb200"
         android:textSize="30sp"
         android:layout_below="@+id/questionTextView"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginBottom="80dp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,11 +66,12 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:id="@+id/backButtonFlashcards"
-        android:background="#003591"
+        android:background="@drawable/back_button_background"
         android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        style="@style/button_text"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -99,5 +81,45 @@
         android:layout_alignTop="@+id/deleteWordButton"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:background="#492491"/>
+        android:background="#492491"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/showAnswerLayout"
+        android:layout_marginTop="285dp"
+        android:layout_height="75dp">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Answer"
+            android:id="@+id/showAnswerButton"
+            android:background="@drawable/button_background"
+            android:minHeight="75dp"
+            style="@style/button_text"
+            android:layout_marginTop="59dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/showAnswerLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" >
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Word"
+            android:id="@+id/nextWordButton"
+            android:background="@drawable/next_button_background"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="29dp"
+            style="@style/button_text"/>
+    </LinearLayout>
+
 </RelativeLayout>
