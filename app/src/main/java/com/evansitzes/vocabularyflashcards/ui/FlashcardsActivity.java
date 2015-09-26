@@ -180,17 +180,6 @@ public class FlashcardsActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            finish();
-//            return true;
-//        }
-//
-//        return super.onKeyDown(keyCode, event);
-//    }
-
-
     private void deleteWord() {
         // delete current word from Hashmap of vocab words
         answer.setVisibility(View.INVISIBLE);
