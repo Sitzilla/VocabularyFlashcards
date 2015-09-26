@@ -21,12 +21,13 @@ public class LevelSelectionActivity extends AppCompatActivity {
     private Button selectionButtonFive;
     private Button back;
     private String level;
-
+    Intent flashcardsIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_selection);
+        flashcardsIntent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
 
         level = getIntent().getStringExtra("language");
         selectionButtonOne = (Button) findViewById(R.id.selectionButtonOne);
@@ -68,17 +69,14 @@ public class LevelSelectionActivity extends AppCompatActivity {
         selectionButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.BASIC_KOREAN);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.BASIC_KOREAN);
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
-                startActivity(intent);
+                goBack();
             }
         });
     }
@@ -88,57 +86,44 @@ public class LevelSelectionActivity extends AppCompatActivity {
         selectionButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.READING_JAPANESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.READING_JAPANESE);
             }
         });
 
         selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.NOUNS_JAPANESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.NOUNS_JAPANESE);
             }
         });
 
         selectionButtonThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.KANJI_JAPANESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.KANJI_JAPANESE);
             }
         });
 
         selectionButtonFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.ADJECTIVES_JAPANESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.ADJECTIVES_JAPANESE);
             }
         });
 
         selectionButtonFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.SHINBUN_JAPANESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.SHINBUN_JAPANESE);
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
-                startActivity(intent);
+                goBack();
             }
         });
-
-
     }
 
     private void loadChineseSelection() {
@@ -146,21 +131,28 @@ public class LevelSelectionActivity extends AppCompatActivity {
         selectionButtonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
-                intent.putExtra("level", FlashcardType.BASIC_CHINESE);
-                startActivity(intent);
+                startFlashcardsActivity(FlashcardType.BASIC_CHINESE);
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
-                startActivity(intent);
+                goBack();
             }
         });
 
 
+    }
+
+    private void startFlashcardsActivity(String flashcardType) {
+        flashcardsIntent.putExtra("level", flashcardType);
+        startActivity(flashcardsIntent);
+    }
+
+    private void goBack() {
+        Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -170,6 +162,4 @@ public class LevelSelectionActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-
-
 }
