@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,13 +109,13 @@ public class FlashcardsActivity extends AppCompatActivity {
     private void loadPage() {
         question = (TextView) findViewById(R.id.questionTextView);
         answer = (TextView) findViewById(R.id.answerTextView);
+        answer.setMovementMethod(new ScrollingMovementMethod());
         remaining = (TextView) findViewById(R.id.remainingWordsTtextView);
         showAnswer = (Button) findViewById(R.id.showAnswerButton);
         nextWord = (Button) findViewById(R.id.nextWordButton);
         deleteWord = (Button) findViewById(R.id.deleteWordButton);
         rateWord = (Button) findViewById(R.id.rateButtonFlashcards);
         back = (Button) findViewById(R.id.backButtonFlashcards);
-
 
         if (savedFileExists()) {
             wordlist.setWordList(getHashmap(this, "wordFile" + level));
@@ -163,13 +164,6 @@ public class FlashcardsActivity extends AppCompatActivity {
             }
         });
 
-        rateWord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rateWord();
-            }
-        });
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +184,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         if (wordlist.getSize() == 0) {
             question.setText("Congratulations! No more words remaining.");
             answer.setVisibility(View.VISIBLE);
-            answer.setText("Start a new list or press \"RESET WORD LIST\" to use this list again");
+            answer.setText("Start a new list or press \"Reset Wordlist\" to use this list again");
             showAnswer.setEnabled(false);
             nextWord.setEnabled(false);
             deleteWord.setEnabled(false);
@@ -209,31 +203,6 @@ public class FlashcardsActivity extends AppCompatActivity {
         String currentWord = wordlist.getRandomForeignWord();
         question.setText(currentWord);
         answer.setText(wordlist.getEnglishFromForeign(currentWord));
-
-    }
-
-    private void rateWord() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // TODO Can probably be refactored
-
-                        nextWord();
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-
-                        nextWord();
-                        break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you know the word").setPositiveButton("Got it", dialogClickListener)
-                .setNegativeButton("Not yet", dialogClickListener).show();
 
     }
 

@@ -37,7 +37,6 @@ public class LevelSelectionActivity extends AppCompatActivity {
         selectionButtonFive = (Button) findViewById(R.id.selectionButtonFive);
         back = (Button) findViewById(R.id.backButton);
 
-
         // Determines what level of flashcards to use
         if (level.equals(LanguageType.KOREAN)) {
             selectionButtonOne.setText("Basic Korean Words");
@@ -61,7 +60,6 @@ public class LevelSelectionActivity extends AppCompatActivity {
             selectionButtonFive.setVisibility(View.GONE);
             loadChineseSelection();
         }
-
     }
 
     private void loadKoreanSelection() {

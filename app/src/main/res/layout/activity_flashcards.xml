@@ -40,6 +40,8 @@
         android:layout_height="wrap_content"
         android:text="Answer"
         android:id="@+id/answerTextView"
+        android:maxLines = "3"
+        android:scrollbars = "vertical"
         android:layout_marginTop="29dp"
         android:textColor="#efb200"
         android:textSize="30sp"
@@ -88,7 +90,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:id="@+id/showAnswerLayout"
-        android:layout_marginTop="285dp"
+        android:layout_above="@+id/nextLayout"
         android:layout_height="75dp">
 
         <Button
@@ -107,9 +109,11 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/showAnswerLayout"
+        android:id="@+id/nextLayout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" >
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="75dp" >
 
         <Button
             android:layout_width="fill_parent"
