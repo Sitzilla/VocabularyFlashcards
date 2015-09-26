@@ -59,4 +59,23 @@
         android:layout_below="@+id/selectionButtonTwo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Adjectives Word List"
+        android:id="@+id/selectionButtonFour"
+        android:layout_below="@+id/selectionButtonThree"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Verbs Word List"
+        android:id="@+id/selectionButtonFive"
+        android:layout_below="@+id/selectionButtonFour"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 </RelativeLayout>

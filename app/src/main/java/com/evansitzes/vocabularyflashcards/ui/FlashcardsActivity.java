@@ -14,11 +14,11 @@ import android.widget.TextView;
 
 import com.evansitzes.vocabularyflashcards.R;
 import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
-import com.evansitzes.vocabularyflashcards.model.AdvancedKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.BasicChineseWords;
+import com.evansitzes.vocabularyflashcards.model.BasicJapaneseAdjectivesAdverbs;
 import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
-import com.evansitzes.vocabularyflashcards.model.IntermediateKoreanWords;
+import com.evansitzes.vocabularyflashcards.model.JapaneseShinbunWords;
 import com.evansitzes.vocabularyflashcards.model.KanjiJapanese;
 import com.evansitzes.vocabularyflashcards.model.NounsJapanese;
 import com.evansitzes.vocabularyflashcards.model.ReadingVocabJapanese;
@@ -55,12 +55,6 @@ public class FlashcardsActivity extends AppCompatActivity {
             case FlashcardType.BASIC_KOREAN:
                 this.wordlist = new BasicKoreanWords();
                 break;
-            case FlashcardType.INTERMEDIATE_KOREAN:
-                this.wordlist = new IntermediateKoreanWords();
-                break;
-            case FlashcardType.ADVANCED_KOREAN:
-                this.wordlist = new AdvancedKoreanWords();
-                break;
             case FlashcardType.READING_JAPANESE:
                 this.wordlist = new ReadingVocabJapanese();
                 break;
@@ -69,6 +63,12 @@ public class FlashcardsActivity extends AppCompatActivity {
                 break;
             case FlashcardType.KANJI_JAPANESE:
                 this.wordlist = new KanjiJapanese();
+                break;
+            case FlashcardType.ADJECTIVES_JAPANESE:
+                this.wordlist = new BasicJapaneseAdjectivesAdverbs();
+                break;
+            case FlashcardType.SHINBUN_JAPANESE:
+                this.wordlist = new JapaneseShinbunWords();
                 break;
             case FlashcardType.BASIC_CHINESE:
                 this.wordlist = new BasicChineseWords();
