@@ -18,6 +18,7 @@ import com.evansitzes.vocabularyflashcards.model.BasicChineseWords;
 import com.evansitzes.vocabularyflashcards.model.BasicJapaneseAdjectivesAdverbs;
 import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
+import com.evansitzes.vocabularyflashcards.model.JapaneseKoreanWords;
 import com.evansitzes.vocabularyflashcards.model.JapaneseShinbunWords;
 import com.evansitzes.vocabularyflashcards.model.KanjiJapanese;
 import com.evansitzes.vocabularyflashcards.model.NounsJapanese;
@@ -46,13 +47,16 @@ public class FlashcardsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
-        actionBar=getActionBar();
+        actionBar = getActionBar();
         level = getIntent().getStringExtra("level");
 
         // Determines what level of flashcards to use
         switch (level) {
             case FlashcardType.BASIC_KOREAN:
                 this.wordlist = new BasicKoreanWords();
+                break;
+            case FlashcardType.JAPANESE_KOREAN:
+                this.wordlist = new JapaneseKoreanWords();
                 break;
             case FlashcardType.READING_JAPANESE:
                 this.wordlist = new ReadingVocabJapanese();

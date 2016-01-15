@@ -40,7 +40,7 @@ public class LevelSelectionActivity extends AppCompatActivity {
         // Determines what level of flashcards to use
         if (level.equals(LanguageType.KOREAN)) {
             selectionButtonOne.setText("Basic Korean Words");
-            selectionButtonTwo.setVisibility(View.GONE);
+            selectionButtonTwo.setText("Japanese Korean Words");
             selectionButtonThree.setVisibility(View.GONE);
             selectionButtonFour.setVisibility(View.GONE);
             selectionButtonFive.setVisibility(View.GONE);
@@ -68,6 +68,13 @@ public class LevelSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startFlashcardsActivity(FlashcardType.BASIC_KOREAN);
+            }
+        });
+
+        selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startFlashcardsActivity(FlashcardType.JAPANESE_KOREAN);
             }
         });
 

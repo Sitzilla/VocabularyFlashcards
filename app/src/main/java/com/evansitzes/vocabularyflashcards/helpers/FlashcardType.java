@@ -5,6 +5,7 @@ package com.evansitzes.vocabularyflashcards.helpers;
  */
 public class FlashcardType {
     public final static String BASIC_KOREAN = "basicKorean";
+    public final static String JAPANESE_KOREAN = "japaneseKorean";
     public final static String INTERMEDIATE_KOREAN = "intermediateKorean";
     public final static String ADVANCED_KOREAN = "advancedKorean";
     public final static String READING_JAPANESE = "readingJapanese";
