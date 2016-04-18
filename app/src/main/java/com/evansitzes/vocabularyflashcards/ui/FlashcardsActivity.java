@@ -2,33 +2,41 @@ package com.evansitzes.vocabularyflashcards.ui;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
-import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
-import com.evansitzes.vocabularyflashcards.model.BasicChineseWords;
-import com.evansitzes.vocabularyflashcards.model.BasicJapaneseAdjectivesAdverbs;
-import com.evansitzes.vocabularyflashcards.model.BasicKoreanWords;
+import com.evansitzes.vocabularyflashcards.model.ApiFlashcard;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
-import com.evansitzes.vocabularyflashcards.model.JapaneseKoreanWords;
-import com.evansitzes.vocabularyflashcards.model.JapaneseShinbunWords;
-import com.evansitzes.vocabularyflashcards.model.KanjiJapanese;
-import com.evansitzes.vocabularyflashcards.model.NounsJapanese;
-import com.evansitzes.vocabularyflashcards.model.ReadingVocabJapanese;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
-import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.doesFileExist;
-import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.getHashmap;
-import static com.evansitzes.vocabularyflashcards.utils.FileUtilities.saveHashmap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlashcardsActivity extends AppCompatActivity {
+
+    public static final String TAG = MainActivity.class.getSimpleName();
 
     private Flashcard wordlist;
     private TextView question;
@@ -40,46 +48,87 @@ public class FlashcardsActivity extends AppCompatActivity {
     private Button deleteWord;
     private Button rateWord;
     private Button back;
-    private String level;
+    private String category;
+    private String language;
     ActionBar actionBar;
+    List<JSONObject> jsonResponseMain = new ArrayList<JSONObject>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
         actionBar = getActionBar();
-        level = getIntent().getStringExtra("level");
+        category = getIntent().getStringExtra("category");
+        language = getIntent().getStringExtra("language");
 
-        // Determines what level of flashcards to use
-        switch (level) {
-            case FlashcardType.BASIC_KOREAN:
-                this.wordlist = new BasicKoreanWords();
-                break;
-            case FlashcardType.JAPANESE_KOREAN:
-                this.wordlist = new JapaneseKoreanWords();
-                break;
-            case FlashcardType.READING_JAPANESE:
-                this.wordlist = new ReadingVocabJapanese();
-                break;
-            case FlashcardType.NOUNS_JAPANESE:
-                this.wordlist = new NounsJapanese();
-                break;
-            case FlashcardType.KANJI_JAPANESE:
-                this.wordlist = new KanjiJapanese();
-                break;
-            case FlashcardType.ADJECTIVES_JAPANESE:
-                this.wordlist = new BasicJapaneseAdjectivesAdverbs();
-                break;
-            case FlashcardType.SHINBUN_JAPANESE:
-                this.wordlist = new JapaneseShinbunWords();
-                break;
-            case FlashcardType.BASIC_CHINESE:
-                this.wordlist = new BasicChineseWords();
-                break;
+        this.wordlist = new ApiFlashcard();
+
+        getWordList();
+
+    }
+
+    private void getWordList() {
+        String categoriesEndpoint = "https://vocabularyterms.herokuapp.com/" + language + "?category=" + category;
+        if (isNetworkAvailable()) {
+//            toggleRefresh();
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(categoriesEndpoint)
+                    .get()
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+//                    toggleRefresh();
+                    alertUserAboutError();
+
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+//                    toggleRefresh();
+                    if (response.isSuccessful()) {
+
+                        final JSONArray jsonData;
+                        try {
+                            jsonData = new JSONObject(response.body().string()).getJSONArray("words");
+                        } catch (JSONException e) {
+                            System.out.println("ERROR IN FIRST");
+                            e.printStackTrace();
+                            return;
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (int i = 0; i < jsonData.length(); i++) {
+                                    try {
+                                        jsonResponseMain.add(jsonData.getJSONObject(i));
+                                    } catch (JSONException e) {
+                                        System.out.println("ERROR IN SECOND");
+                                        e.printStackTrace();
+                                        return;
+                                    }
+                                }
+                                Log.v("LOGGING!!!", jsonResponseMain.toString());
+
+                                loadPage();
+                                listenForClickEvents();
+                            }
+                        });
+                    } else {
+                        alertUserAboutError();
+                    }
+
+                }
+            });
+        } else {
+            Toast.makeText(this, "Network is unavailable",
+                    Toast.LENGTH_LONG).show();
         }
-
-        loadPage();
-        listenForClickEvents();
     }
 
     @Override
@@ -123,11 +172,13 @@ public class FlashcardsActivity extends AppCompatActivity {
         // If file already exists in storage for the wordlist then set the current
         // variable 'wordlist' to it, otherwise create a new file and populate it with
         // the method populateInitialWordlist()
-        if (savedFileExists()) {
-            wordlist.setWordList(getHashmap(this, "wordFile" + level));
-        } else {
-            wordlist.populateInitialWordlist();
-        }
+//        if (savedFileExists()) {
+//            wordlist.setWordList(getHashmap(this, "wordFile" + category));
+//        } else {
+        System.out.println("LOADING PAGE!!!");
+        wordlist.setJsonResponseMain(jsonResponseMain);
+        wordlist.populateInitialWordlist();
+//        }
 
         // Set counter for number of words remaining in list
         setWordlistCounter();
@@ -181,7 +232,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         else {
             showNextWord();
         }
-        saveFlashcard();
+//        saveFlashcard();
     }
 
     private void showcurrentWord() {
@@ -220,7 +271,7 @@ public class FlashcardsActivity extends AppCompatActivity {
                     nextWord.setEnabled(true);
                     deleteWord.setEnabled(true);
                     setWordlistCounter();
-                    saveFlashcard();
+//                    saveFlashcard();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -235,11 +286,30 @@ public class FlashcardsActivity extends AppCompatActivity {
         showNextWord();
     }
 
-    private void saveFlashcard() {
-        saveHashmap(this, "wordFile" + level, wordlist.getWordList());
+//    private void saveFlashcard() {
+//        saveHashmap(this, "wordFile" + category, wordlist.getWordList());
+//    }
+
+    private void toggleRefresh() {
+
     }
 
-    private boolean savedFileExists() {
-        return doesFileExist(this, "wordFile" + level);
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
+
+    private void alertUserAboutError() {
+        Log.v("ERROR WITH API CALL", "ERROR");
+    }
+
+//    private boolean savedFileExists() {
+//        return doesFileExist(this, "wordFile" + category);
+//    }
 }

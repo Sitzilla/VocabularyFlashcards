@@ -57,19 +57,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startKoreanFlashcards() {
-        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        Intent intent = new Intent(this, LevelSelectionActivityTest.class);
         intent.putExtra("language", LanguageType.KOREAN);
         startActivity(intent);
     }
 
     private void startJapaneseFlashcards() {
-        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        Intent intent = new Intent(this, LevelSelectionActivityTest.class);
         intent.putExtra("language", LanguageType.JAPANESE);
         startActivity(intent);
     }
 
     private void startChineseFlashcards() {
-        Intent intent = new Intent(this, LevelSelectionActivity.class);
+        Intent intent = new Intent(this, LevelSelectionActivityTest.class);
         intent.putExtra("language", LanguageType.CHINESE);
         startActivity(intent);
     }

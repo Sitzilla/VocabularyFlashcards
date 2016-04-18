@@ -1,6 +1,9 @@
 package com.evansitzes.vocabularyflashcards.model;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -10,8 +13,13 @@ public abstract class Flashcard {
     private String vocabQuestion = "My Question";
     private String vocabAnswer = "Correct Answer";
     protected HashMap<String, String> foreignToEnglish = new HashMap<String, String>();
+    protected List<JSONObject> jsonResponseMain;
 
     public abstract void populateInitialWordlist();
+
+    public void setJsonResponseMain(List<JSONObject> jsonResponseMain) {
+
+    }
 
     public HashMap<String, String> getWordList() {
         return foreignToEnglish;
