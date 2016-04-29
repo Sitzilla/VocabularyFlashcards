@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
-import com.evansitzes.vocabularyflashcards.helpers.FlashcardType;
+import com.evansitzes.vocabularyflashcards.helpers.ExceptionHandler;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -33,40 +33,45 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    private Button selectionButtonOne;
-    private Button selectionButtonTwo;
-    private Button selectionButtonThree;
-    private Button selectionButtonFour;
-    private Button selectionButtonFive;
-    private Button back;
-    private String language;
-    Intent flashcardsIntent;
-    public OkHttpClient client = new OkHttpClient();
-    ArrayList<String> jsonResponseMain = new ArrayList<String>();
+    final public OkHttpClient client = new OkHttpClient();
+    final ArrayList<String> categories = new ArrayList<String>();
     public LinearLayout container;
-
+    Intent flashcardsIntent;
+    private String language;
+    private Button back;
+    private String url = "https://vocabularyterms.herokuapp.com/{language}/categories";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
         setContentView(R.layout.activity_level_selection);
         flashcardsIntent = new Intent(LevelSelectionActivityTest.this, FlashcardsActivity.class);
-
         language = getIntent().getStringExtra("language");
         container = (LinearLayout)findViewById(R.id.container);
-        getWordList(language);
 
+        setBackButton();
+
+        getWordList(language);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     public void showPage() {
-        Button buttons[] = new Button[jsonResponseMain.size()];
+        final int categorySize = categories.size();
+        final Button buttons[] = new Button[categorySize];
 
-        for (int i = 0; i < jsonResponseMain.size(); i++){
-
+        for (int i = 0; i < categorySize; i++){
             final Button button = new Button(this);
-            final String category = jsonResponseMain.get(i);
+            final String category = categories.get(i);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,45 +85,38 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
             container.addView(buttons[i]);
         }
 
-        back = (Button) findViewById(R.id.backButton);
+    }
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack();
-            }
-        });
+    public void addBtn(View v) {
+
     }
 
     private void getWordList(final String language) {
-        String categoriesEndpoint = "https://vocabularyterms.herokuapp.com/" + language + "/categories";
+        url = url.replace("{language}", language);
+
         if (isNetworkAvailable()) {
-//            toggleRefresh();
-            OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url(categoriesEndpoint)
+                    .url(url)
                     .get()
                     .addHeader("Content-Type", "application/json")
                     .build();
 
-            Call call = client.newCall(request);
+            final Call call = client.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Request request, IOException e) {
-//                    toggleRefresh();
-                    alertUserAboutError();
-
+                    alertUserAboutError(e.getMessage());
                 }
 
                 @Override
-                public void onResponse(Response response) throws IOException {
-                    toggleRefresh();
+                public void onResponse(final Response response) throws IOException {
                     try {
                         final JSONArray jsonData;
                         try {
                             jsonData = new JSONArray(response.body().string());
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            alertUserAboutError(e.getMessage());
                             return;
                         }
                         if (response.isSuccessful()) {
@@ -127,7 +125,7 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
                                 public void run() {
                                     for (int i = 0; i < jsonData.length(); i++) {
                                         try {
-                                            jsonResponseMain.add(jsonData.get(i).toString());
+                                            categories.add(jsonData.get(i).toString());
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -136,7 +134,7 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            alertUserAboutError();
+                            alertUserAboutError("Error loading JSON");
                         }
                     } catch (IOException e) {
                         Log.e(TAG, "Exception caught: ", e);
@@ -150,14 +148,6 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
         }
     }
 
-    public void addBtn(View v) {
-
-    }
-
-    private void toggleRefresh() {
-
-    }
-
     private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -169,94 +159,6 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
         return isAvailable;
     }
 
-    private void loadKoreanSelection() {
-
-        selectionButtonOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.BASIC_KOREAN);
-            }
-        });
-
-        selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.JAPANESE_KOREAN);
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack();
-            }
-        });
-    }
-
-    private void loadJapaneseSelection() {
-
-        selectionButtonOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.READING_JAPANESE);
-            }
-        });
-
-        selectionButtonTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.NOUNS_JAPANESE);
-            }
-        });
-
-        selectionButtonThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.KANJI_JAPANESE);
-            }
-        });
-
-        selectionButtonFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.ADJECTIVES_JAPANESE);
-            }
-        });
-
-        selectionButtonFive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.SHINBUN_JAPANESE);
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack();
-            }
-        });
-    }
-
-    private void loadChineseSelection() {
-
-        selectionButtonOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startFlashcardsActivity(FlashcardType.BASIC_CHINESE);
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack();
-            }
-        });
-
-
-    }
-
     private void startFlashcardsActivity(final String flashcardType) {
         flashcardsIntent.putExtra("category", flashcardType);
         flashcardsIntent.putExtra("language", language);
@@ -264,20 +166,24 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
         startActivity(flashcardsIntent);
     }
 
+    private void alertUserAboutError(final String error) {
+        Log.v(TAG, error);
+        Toast.makeText(this, error,
+                Toast.LENGTH_LONG).show();
+    }
+
+    private void setBackButton() {
+        back = (Button) findViewById(R.id.backButton);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBack();
+            }
+        });
+    }
+
     private void goBack() {
         Intent intent = new Intent(LevelSelectionActivityTest.this, MainActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main_actions, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    private void alertUserAboutError() {
-        System.out.println("ERROR WITH API CALL");
     }
 }
