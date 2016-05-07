@@ -6,7 +6,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="com.evansitzes.vocabularyflashcards.ui.LevelSelectionActivityTest"
+                tools:context="com.evansitzes.vocabularyflashcards.ui.LevelSelectionActivity"
                 android:background="@drawable/gradient">
 
     <TextView
@@ -22,17 +22,25 @@
         android:layout_marginBottom="30dp"
         style="@style/header_text"/>
 
-    <LinearLayout
-        android:id="@+id/container"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:clickable="true"
-        android:layout_marginTop="50dp"
-        style="@style/button_text"
-        android:onClick="addBtn">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainTextView"
+        android:layout_above="@+id/backButton">
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:layout_marginTop="50dp"
+            style="@style/button_text"
+            android:onClick="addBtn">
+
+        </LinearLayout>
+    </ScrollView>
+
 
     <Button
         android:layout_width="fill_parent"

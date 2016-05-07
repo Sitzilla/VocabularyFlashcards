@@ -2,6 +2,7 @@ package com.evansitzes.vocabularyflashcards.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -28,9 +29,10 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class LevelSelectionActivityTest extends AppCompatActivity {
+public class LevelSelectionActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    private static final String CATEGORIES_URL = "https://vocabularyterms.herokuapp.com/{language}/categories";
 
     final public OkHttpClient client = new OkHttpClient();
     final ArrayList<String> categories = new ArrayList<String>();
@@ -38,7 +40,6 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
     Intent flashcardsIntent;
     private String language;
     private Button back;
-    private String url = "https://vocabularyterms.herokuapp.com/{language}/categories";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -46,12 +47,11 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
 //        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         setContentView(R.layout.activity_level_selection);
-        flashcardsIntent = new Intent(LevelSelectionActivityTest.this, FlashcardsActivity.class);
+        flashcardsIntent = new Intent(LevelSelectionActivity.this, FlashcardsActivity.class);
         language = getIntent().getStringExtra("language");
         container = (LinearLayout)findViewById(R.id.container);
 
         setBackButton();
-
         getWordList(language);
     }
 
@@ -78,10 +78,18 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
                 }
             });
 
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 0, 0, 30);
+
+            button.setLayoutParams(params);
+            button.setBackgroundResource(R.drawable.button_background);
+            button.setTextColor(Color.WHITE);
+
             buttons[i] = button;
             buttons[i].setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
             buttons[i].setText(language + ": " + category);
-            container.addView(buttons[i]);
+            container.addView(buttons[i], params);
         }
 
     }
@@ -91,11 +99,9 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
     }
 
     private void getWordList(final String language) {
-        url = url.replace("{language}", language);
-
         if (isNetworkAvailable()) {
             Request request = new Request.Builder()
-                    .url(url)
+                    .url(CATEGORIES_URL.replace("{language}", language))
                     .get()
                     .addHeader("Content-Type", "application/json")
                     .build();
@@ -182,7 +188,7 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
     }
 
     private void goBack() {
-        Intent intent = new Intent(LevelSelectionActivityTest.this, MainActivity.class);
+        Intent intent = new Intent(LevelSelectionActivity.this, MainActivity.class);
         startActivity(intent);
     }
 }

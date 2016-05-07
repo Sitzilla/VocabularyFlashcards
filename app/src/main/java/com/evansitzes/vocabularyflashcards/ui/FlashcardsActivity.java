@@ -37,6 +37,7 @@ import java.util.List;
 public class FlashcardsActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    private static final String CATEGORIES_ENDPOINT = "https://vocabularyterms.herokuapp.com/{language}?category={category}";
 
     private Flashcard wordlist;
     private TextView question;
@@ -46,7 +47,6 @@ public class FlashcardsActivity extends AppCompatActivity {
     private Button showAnswer;
     private Button nextWord;
     private Button deleteWord;
-    private Button rateWord;
     private Button back;
     private String category;
     private String language;
@@ -61,22 +61,16 @@ public class FlashcardsActivity extends AppCompatActivity {
         actionBar = getActionBar();
         category = getIntent().getStringExtra("category");
         language = getIntent().getStringExtra("language");
-
         this.wordlist = new ApiFlashcard();
 
-//        setBackButton();
-
         getWordList();
-
     }
 
     private void getWordList() {
-        String categoriesEndpoint = "https://vocabularyterms.herokuapp.com/" + language + "?category=" + category;
         if (isNetworkAvailable()) {
-//            toggleRefresh();
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
-                    .url(categoriesEndpoint)
+                    .url(CATEGORIES_ENDPOINT.replace("{language}", language).replace("{category}", category))
                     .get()
                     .addHeader("Content-Type", "application/json")
                     .build();
@@ -90,14 +84,12 @@ public class FlashcardsActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse(Response response) throws IOException {
-//                    toggleRefresh();
                     if (response.isSuccessful()) {
 
                         final JSONArray jsonData;
                         try {
                             jsonData = new JSONObject(response.body().string()).getJSONArray("words");
                         } catch (JSONException e) {
-                            System.out.println("ERROR IN FIRST");
                             e.printStackTrace();
                             return;
                         }
@@ -109,13 +101,10 @@ public class FlashcardsActivity extends AppCompatActivity {
                                     try {
                                         jsonResponseMain.add(jsonData.getJSONObject(i));
                                     } catch (JSONException e) {
-                                        System.out.println("ERROR IN SECOND");
                                         e.printStackTrace();
                                         return;
                                     }
                                 }
-                                Log.v("LOGGING!!!", jsonResponseMain.toString());
-
                                 loadPage();
                                 listenForClickEvents();
                             }
@@ -167,10 +156,8 @@ public class FlashcardsActivity extends AppCompatActivity {
         showAnswer = (Button) findViewById(R.id.showAnswerButton);
         nextWord = (Button) findViewById(R.id.nextWordButton);
         deleteWord = (Button) findViewById(R.id.deleteWordButton);
-        rateWord = (Button) findViewById(R.id.rateButtonFlashcards);
         back = (Button) findViewById(R.id.backButtonFlashcards);
 
-        System.out.println("LOADING PAGE!!!");
         wordlist.setJsonResponseMain(jsonResponseMain);
         wordlist.populateInitialWordlist();
 //        }
@@ -266,7 +253,6 @@ public class FlashcardsActivity extends AppCompatActivity {
                     nextWord.setEnabled(true);
                     deleteWord.setEnabled(true);
                     setWordlistCounter();
-//                    saveFlashcard();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:
@@ -279,14 +265,6 @@ public class FlashcardsActivity extends AppCompatActivity {
                 .setNegativeButton("No", dialogClickListener).show();
 
         showNextWord();
-    }
-
-//    private void saveFlashcard() {
-//        saveHashmap(this, "wordFile" + category, wordlist.getWordList());
-//    }
-
-    private void toggleRefresh() {
-
     }
 
     private boolean isNetworkAvailable() {
@@ -303,19 +281,5 @@ public class FlashcardsActivity extends AppCompatActivity {
     private void alertUserAboutError() {
         Log.v("ERROR WITH API CALL", "ERROR");
     }
-//
-//    private void setBackButton() {
-//        back = (Button) findViewById(R.id.backButton);
-//        back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goBack();
-//            }
-//        });
-//    }
-//
-//    private void goBack() {
-//        Intent intent = new Intent(FlashcardsActivity.this, LevelSelectionActivityTest.class);
-//        startActivity(intent);
-//    }
+
 }
