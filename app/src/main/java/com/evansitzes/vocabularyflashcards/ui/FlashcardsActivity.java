@@ -75,7 +75,6 @@ public class FlashcardsActivity extends AppCompatActivity {
     private void getWordList() {
         String categoriesEndpoint = "https://vocabularyterms.herokuapp.com/" + language + "?category=" + category;
         if (isNetworkAvailable()) {
-//            toggleRefresh();
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
                     .url(categoriesEndpoint)
