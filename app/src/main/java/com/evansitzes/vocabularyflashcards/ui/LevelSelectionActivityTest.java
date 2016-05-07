@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
-import com.evansitzes.vocabularyflashcards.helpers.ExceptionHandler;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -44,7 +43,7 @@ public class LevelSelectionActivityTest extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         setContentView(R.layout.activity_level_selection);
         flashcardsIntent = new Intent(LevelSelectionActivityTest.this, FlashcardsActivity.class);

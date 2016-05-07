@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.evansitzes.vocabularyflashcards.R;
-import com.evansitzes.vocabularyflashcards.helpers.ExceptionHandler;
 import com.evansitzes.vocabularyflashcards.helpers.LanguageType;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_main);
 
         koreanButton = (ImageButton)findViewById(R.id.koreanButton);

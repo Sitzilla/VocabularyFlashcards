@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evansitzes.vocabularyflashcards.R;
-import com.evansitzes.vocabularyflashcards.helpers.ExceptionHandler;
 import com.evansitzes.vocabularyflashcards.model.ApiFlashcard;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.squareup.okhttp.Call;
@@ -58,7 +56,7 @@ public class FlashcardsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         setContentView(R.layout.activity_flashcards);
         actionBar = getActionBar();
         category = getIntent().getStringExtra("category");
@@ -66,7 +64,7 @@ public class FlashcardsActivity extends AppCompatActivity {
 
         this.wordlist = new ApiFlashcard();
 
-        setBackButton();
+//        setBackButton();
 
         getWordList();
 
@@ -208,6 +206,13 @@ public class FlashcardsActivity extends AppCompatActivity {
                 deleteWord();
             }
         });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void deleteWord() {
@@ -298,19 +303,19 @@ public class FlashcardsActivity extends AppCompatActivity {
     private void alertUserAboutError() {
         Log.v("ERROR WITH API CALL", "ERROR");
     }
-
-    private void setBackButton() {
-        back = (Button) findViewById(R.id.backButton);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goBack();
-            }
-        });
-    }
-
-    private void goBack() {
-        Intent intent = new Intent(FlashcardsActivity.this, LevelSelectionActivityTest.class);
-        startActivity(intent);
-    }
+//
+//    private void setBackButton() {
+//        back = (Button) findViewById(R.id.backButton);
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goBack();
+//            }
+//        });
+//    }
+//
+//    private void goBack() {
+//        Intent intent = new Intent(FlashcardsActivity.this, LevelSelectionActivityTest.class);
+//        startActivity(intent);
+//    }
 }
