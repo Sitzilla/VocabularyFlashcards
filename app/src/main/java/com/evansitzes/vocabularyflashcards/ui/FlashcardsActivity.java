@@ -140,6 +140,9 @@ public class FlashcardsActivity extends AppCompatActivity {
             case R.id.action_reset_wordlist:
                 resetWordlist();
                 return true;
+            case R.id.toggle_wordlist:
+                toggleWordOrder();
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -193,6 +196,12 @@ public class FlashcardsActivity extends AppCompatActivity {
                 deleteWord();
             }
         });
+//        toggleWordOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toggleWordOrder();
+//            }
+//        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,6 +224,10 @@ public class FlashcardsActivity extends AppCompatActivity {
         else {
             showNextWord();
         }
+    }
+
+    private void toggleWordOrder() {
+        wordlist.reverseWordOrder();
     }
 
     private void showcurrentWord() {

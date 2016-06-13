@@ -12,41 +12,42 @@ import java.util.Random;
 public abstract class Flashcard {
     private String vocabQuestion = "My Question";
     private String vocabAnswer = "Correct Answer";
-    protected HashMap<String, String> foreignToEnglish = new HashMap<String, String>();
+    protected HashMap<String, String> wordlist = new HashMap<String, String>();
     protected List<JSONObject> jsonResponseMain;
 
     public abstract void populateInitialWordlist();
+    public abstract void reverseWordOrder();
 
     public void setJsonResponseMain(List<JSONObject> jsonResponseMain) {
 
     }
 
     public HashMap<String, String> getWordList() {
-        return foreignToEnglish;
+        return wordlist;
     }
 
     public int getSize() {
-        return foreignToEnglish.size();
+        return wordlist.size();
     }
 
     public String getRandomForeignWord() {
         Random generator = new Random();
-        Object[] words = foreignToEnglish.keySet().toArray();
+        Object[] words = wordlist.keySet().toArray();
         Object randomValue = words[generator.nextInt(words.length)];
 
         return randomValue.toString();
     }
 
     public String getEnglishFromForeign(String foreignWord) {
-        return foreignToEnglish.get(foreignWord);
+        return wordlist.get(foreignWord);
     }
 
     public void removeForeignWord(String foreignWord) {
-        foreignToEnglish.remove(foreignWord);
+        wordlist.remove(foreignWord);
     }
 
     public void setWordList(HashMap<String, String> foreignToEnglish) {
-        this.foreignToEnglish = foreignToEnglish;
+        this.wordlist = foreignToEnglish;
     }
 
     public String getVocabQuestion() {
