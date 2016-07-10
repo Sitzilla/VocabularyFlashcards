@@ -22,8 +22,10 @@ import com.evansitzes.vocabularyflashcards.model.ApiFlashcard;
 import com.evansitzes.vocabularyflashcards.model.Flashcard;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
@@ -34,10 +36,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okio.BufferedSink;
+
 public class FlashcardsActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private static final String CATEGORIES_ENDPOINT = "https://vocabularyterms.herokuapp.com/{language}?category={category}";
+    private static final String INCREASE_ENDPOINT = "https://vocabularyterms.herokuapp.com/{language}/{id}/increase";
 
     private Flashcard wordlist;
     private TextView question;
@@ -48,10 +53,12 @@ public class FlashcardsActivity extends AppCompatActivity {
     private Button nextWord;
     private Button deleteWord;
     private Button back;
+    private Button increase;
     private String category;
     private String language;
     ActionBar actionBar;
     List<JSONObject> jsonResponseMain = new ArrayList<JSONObject>();
+    private int currentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +166,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         showAnswer = (Button) findViewById(R.id.showAnswerButton);
         nextWord = (Button) findViewById(R.id.nextWordButton);
         deleteWord = (Button) findViewById(R.id.deleteWordButton);
+        increase = (Button) findViewById(R.id.increaseButton);
         back = (Button) findViewById(R.id.backButtonFlashcards);
 
         wordlist.setJsonResponseMain(jsonResponseMain);
@@ -173,7 +181,8 @@ public class FlashcardsActivity extends AppCompatActivity {
         } else {
             final String currentWord = wordlist.getRandomForeignWord();
             question.setText(currentWord);
-            answer.setText(wordlist.getEnglishFromForeign(currentWord));
+            answer.setText(wordlist.getCurrentEnglish());
+            currentId = wordlist.getCurrentId();
         }
     }
 
@@ -196,6 +205,15 @@ public class FlashcardsActivity extends AppCompatActivity {
                 deleteWord();
             }
         });
+
+        increase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                increase();
+                deleteWord();
+            }
+        });
+
 //        toggleWordOrder.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -212,8 +230,8 @@ public class FlashcardsActivity extends AppCompatActivity {
     }
 
     private void deleteWord() {
-        // delete current word from Hashmap of vocab words
-        wordlist.removeForeignWord((String) question.getText());
+        // delete current word from list of vocab words
+        wordlist.removeForeignWord();
         setWordlistCounter();
 
         // No more words in the list scenario
@@ -224,6 +242,51 @@ public class FlashcardsActivity extends AppCompatActivity {
         else {
             showNextWord();
         }
+    }
+
+    private void increase() {
+        if (isNetworkAvailable()) {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(INCREASE_ENDPOINT.replace("{language}", language).replace("{id}", Integer.toString(currentId)))
+                    .put(buildRequestBody())
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            final Call call = client.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                    alertUserAboutError();
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+
+                }
+            });
+        } else {
+            Toast.makeText(this, "Network is unavailable",
+                    Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private RequestBody buildRequestBody() {
+
+        final RequestBody request = new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return null;
+            }
+
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+
+            }
+        };
+
+        return request;
     }
 
     private void toggleWordOrder() {
@@ -238,7 +301,8 @@ public class FlashcardsActivity extends AppCompatActivity {
         answer.setVisibility(View.INVISIBLE);
         String currentWord = wordlist.getRandomForeignWord();
         question.setText(currentWord);
-        answer.setText(wordlist.getEnglishFromForeign(currentWord));
+        answer.setText(wordlist.getCurrentEnglish());
+        currentId = wordlist.getCurrentId();
     }
 
     private void setWordlistCounter() {
@@ -253,6 +317,7 @@ public class FlashcardsActivity extends AppCompatActivity {
         showAnswer.setEnabled(false);
         nextWord.setEnabled(false);
         deleteWord.setEnabled(false);
+        increase.setEnabled(false);
     }
 
     private void resetWordlist() {
@@ -265,6 +330,7 @@ public class FlashcardsActivity extends AppCompatActivity {
                     showAnswer.setEnabled(true);
                     nextWord.setEnabled(true);
                     deleteWord.setEnabled(true);
+                    increase.setEnabled(true);
                     setWordlistCounter();
                     break;
 

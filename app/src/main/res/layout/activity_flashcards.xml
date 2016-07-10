@@ -78,13 +78,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rate"
-        android:id="@+id/rateButtonFlashcards"
+        android:text="GOT IT!"
+        android:id="@+id/increaseButton"
         android:layout_alignTop="@+id/deleteWordButton"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
-        android:background="#492491"
-        android:visibility="invisible"/>
+        style="@style/button_text"
+        android:background="@drawable/increase_button_background"
+        />
 
     <LinearLayout
         android:orientation="horizontal"

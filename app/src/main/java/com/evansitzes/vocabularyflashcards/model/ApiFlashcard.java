@@ -19,23 +19,27 @@ public class ApiFlashcard extends Flashcard {
 
     @Override
     public void populateInitialWordlist() {
-        for (final JSONObject word : jsonResponseMain) {
-            try {
-                wordlist.put(word.getString("foreignWord"), word.getString("englishWord"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        for (final JSONObject response : jsonResponseMain) {
+            wordlist.add(buildWord(response));
         }
     }
 
-    @Override
-    public void reverseWordOrder() {
-        HashMap<String, String> wordlistInverse = new HashMap<String, String>();
+    private Word buildWord(final JSONObject response) {
+        final Word word = new Word();
 
-        for(Map.Entry<String, String> entry : wordlist.entrySet()){
-            wordlistInverse.put(entry.getValue(), entry.getKey());
+        try {
+            word.setId(response.getInt("id"));
+            word.setForeignWord(response.getString("foreignWord"));
+            word.setEnglishWord(response.getString("englishWord"));
+            word.setActive(response.getBoolean("active"));
+            word.setLevel(response.getInt("level"));
+            word.setCategory(response.getString("category"));
+            word.setKnowledgeCount(response.getInt("knowledgeCount"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        wordlist = wordlistInverse;
+        return word;
     }
+
 }

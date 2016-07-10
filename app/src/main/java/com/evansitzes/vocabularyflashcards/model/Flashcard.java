@@ -2,7 +2,7 @@ package com.evansitzes.vocabularyflashcards.model;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -12,17 +12,18 @@ import java.util.Random;
 public abstract class Flashcard {
     private String vocabQuestion = "My Question";
     private String vocabAnswer = "Correct Answer";
-    protected HashMap<String, String> wordlist = new HashMap<String, String>();
+    private boolean reversed = false;
+    private Word currentWord;
+    protected List<Word> wordlist = new ArrayList<>();
     protected List<JSONObject> jsonResponseMain;
 
     public abstract void populateInitialWordlist();
-    public abstract void reverseWordOrder();
 
     public void setJsonResponseMain(List<JSONObject> jsonResponseMain) {
 
     }
 
-    public HashMap<String, String> getWordList() {
+    public List<Word> getWordList() {
         return wordlist;
     }
 
@@ -31,23 +32,27 @@ public abstract class Flashcard {
     }
 
     public String getRandomForeignWord() {
-        Random generator = new Random();
-        Object[] words = wordlist.keySet().toArray();
-        Object randomValue = words[generator.nextInt(words.length)];
+        final Random generator = new Random();
+        currentWord = wordlist.get(generator.nextInt(wordlist.size()));
 
-        return randomValue.toString();
+        if (reversed) {
+            return currentWord.getEnglishWord();
+        }
+        return currentWord.getForeignWord();
     }
 
-    public String getEnglishFromForeign(String foreignWord) {
-        return wordlist.get(foreignWord);
+    public String getCurrentEnglish() {
+        if (reversed) {
+            return currentWord.getForeignWord();
+        }
+        return currentWord.getEnglishWord();    }
+
+    public int getCurrentId() {
+        return currentWord.getId();
     }
 
-    public void removeForeignWord(String foreignWord) {
-        wordlist.remove(foreignWord);
-    }
-
-    public void setWordList(HashMap<String, String> foreignToEnglish) {
-        this.wordlist = foreignToEnglish;
+    public void removeForeignWord() {
+        wordlist.remove(currentWord);
     }
 
     public String getVocabQuestion() {
@@ -67,5 +72,11 @@ public abstract class Flashcard {
     }
 
 
-
+    public void reverseWordOrder() {
+        if (reversed) {
+            reversed = false;
+        } else {
+            reversed = true;
+        }
+    }
 }
